@@ -1,0 +1,19 @@
+<div class="media margin-bottom-15 data-card" ng-if="!mode || mode == 'card'">
+    <a class="pull-left" href="/journalist/{{ journalist.slug }}/#/">
+        <img width="70" height="70" class="img-rounded" ng-src="{{ journalist.imageUrl || '/images/profile_default_journalist.png' }}" />
+    </a>
+    <div class="media-body">
+        <h4 class="media-heading">
+            <a href="/journalist/{{ journalist.slug }}/#/">
+                <span ng-bind="journalist.first_name"></span>
+                <span ng-bind="journalist.last_name"></span>
+            </a>
+        </h4>
+        <nl-star-rating rating="journalist.rating"></nl-star-rating>
+        <div style="padding-top: 5px;" ng-if="registered">
+            <button ng-if="!following" ng-click="toggle_following()" class="btn btn-xs btn-default follow">follow</button>
+            <button ng-if="following" ng-click="toggle_following()" class="btn btn-xs btn-success follow following">following</button>
+        </div>
+    </div>
+</div>
+

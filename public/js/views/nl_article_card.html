@@ -1,0 +1,24 @@
+<div class="media data-card margin-bottom-10">
+    <div class="row">
+        <div class=" col-md-12">
+            <img class="responsive" src="/images/placeholder.jpg" style="width:100%" />
+            <h4><a ng-bind="article.title" href="/article/{{article.slug}}/#/"></a></h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <nl_star_rating rating="avg_rating" ></nl_star_rating>
+        </div>
+        <div class="col-md-6 text-right">
+            <p ng-bind="(article.post_date) | date: 'MMMM dd'"></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <nl-publisher-card publisher="article.publisher" template="nl_publisher_card_mini.html"></nl-publisher-card>
+        </div>
+        <div class="col-md-6">
+            <nl-journalist-card journalist="article.journalist" template="nl_journalist_card_mini.html"></nl-journalist-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,309 @@
+<% include ../common/header %>
+
+<section ng-controller="ViewArticleController">
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            <%- data.article.title %>
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="/">Home</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="/articles">Articles</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="/article/<%- data.article.slug %>"><%- data.article.title %></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-right">
+                    11:15 am October 14, 2013
+                </div>
+                <div>
+                    <img src="http://news.bbcimg.co.uk/media/images/78111000/jpg/_78111914_024255669.jpg" alt="" class="img-responsive" style="width:100%" />
+                </div>
+            </div>
+        </div>
+        <div class="row margin-top-20">
+            <div class="col-md-6">
+                <script type="text/ng-template" id="/public/js/views/nl_publisher_card.html">
+                    <% include ../../public/js/views/nl_publisher_card.html %>
+                </script>
+                <nl-publisher-card publisher="article.publisher">
+                    <div class="media margin-bottom-15">
+                        <script type="text/ng-template" id="nl_publisher_card.html">
+                            <% include ../../public/js/views/nl_publisher_card.html %>
+                        </script>
+                        <nl-publisher-card publisher="article.publisher" class="ng-isolate-scope">
+                        </nl-publisher-card>
+                    </div>
+                </nl-publisher-card>
+            </div>
+            <div class="col-md-6">
+                <script type="text/ng-template" id="nl_journalist_card.html">
+                    <% include ../../public/js/views/nl_journalist_card.html %>
+                </script>
+                <nl-journalist-card journalist="article.journalist" class="ng-isolate-scope">
+                </nl-journalist-card>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-group" id="article-meta" style="margin-bottom: 0;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#article-meta" href="#collapseOne">
+                                    Main Point
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body" ng-cloak>
+                                {{ article.body }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#article-meta" href="#collapseTwo">
+                                    Facts
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <p ng-repeat="fact in article.facts">
+                                    {{ fact.note }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#article-meta" href="#collapseThree">
+                                    Statements
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <p ng-repeat="statement in article.statements">
+                                    {{ statement.note }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#article-meta" href="#collapseFour">
+                                    Factual Content
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <p ng-repeat="statement in article.statements | filter: {type: 'factual'}">
+                                    {{ statement.note }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#article-meta" href="#collapseFive">
+                                    Context Statements
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseFive" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <p ng-repeat="statement in article.statements | filter: {type: 'contextual'}">
+                                    {{ statement.note }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>My Rating :</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <nl_star_rating rating="my_rating"></nl_star_rating>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <br />
+                <nl-range-slider name="slider_importance" max="5" min="1" step=".1" value="article.user_rating.importance" ></nl-range-slider>
+            </div>
+            <div class="col-md-6">
+                <h4 class="media-body">
+                    Importance
+                </h4>
+                <nl_star_rating rating="article.user_rating.importance" ></nl_star_rating>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <br />
+                <nl-range-slider name="slider_importance" max="5" min="1" step=".1" value="article.user_rating.factuality" ></nl-range-slider>
+            </div>
+            <div class="col-md-6">
+                <h4 class="media-body">
+                    Factuality
+                </h4>
+                <nl_star_rating rating="article.user_rating.factuality"></nl_star_rating>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <br />
+                <nl-range-slider name="slider_importance" max="5" min="1" step=".1" value="article.user_rating.transparency" ></nl-range-slider>
+            </div>
+            <div class="col-md-6">
+                <h4 class="media-body">
+                    Transparency
+                </h4>
+                <nl_star_rating rating="article.user_rating.transparency"></nl_star_rating>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <br />
+                <nl-range-slider name="slider_importance" max="5" min="1" step=".1" value="article.user_rating.independence" ></nl-range-slider>
+            </div>
+            <div class="col-md-6">
+                <h4 class="media-body">
+                    Independence
+                </h4>
+                <nl_star_rating rating="article.user_rating.independence"></nl_star_rating>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Tags</h4>
+            </div>
+            <div class="col-md-12">
+                    <span ng-repeat="tag in article.tags">
+                        <span class="label label-default">
+                           <i class="fa fa-tag"></i>
+                            <span ng-bind="tag.name"></span>
+                        </span>&nbsp;
+                    </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="panel panel-default row">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-10">
+                <h3 class="panel-title">What's Next?</h3>
+            </div>
+            <div class="col-md-2 text-right">
+                <div class="btn-group">
+                    <button class="btn btn-xs btn-default"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                    <button class="btn btn-xs btn-default"><i class="glyphicon glyphicon-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-3">
+                <nl-article-card>
+                    <header><img src="http://lorempixel.com/400/200/" alt="" class="img-responsive" /></header>
+                    <h6>Gutsy Scherzer helps Tigers force game 5</h6>
+                    <footer class="row">
+                        <div class="col-md-8">
+                            The Guardian
+                        </div>
+                        <div class="col-md-4">
+                            Oct 14
+                        </div>
+                    </footer>
+                </nl-article-card>
+            </div>
+            <div class="col-md-3">
+                <nl-article-card>
+                    <header><img src="http://lorempixel.com/400/200/" alt="" class="img-responsive" /></header>
+                    <h6>Gutsy Scherzer helps Tigers force game 5</h6>
+                    <footer class="row">
+                        <div class="col-md-8">
+                            The Guardian
+                        </div>
+                        <div class="col-md-4">
+                            Oct 14
+                        </div>
+                    </footer>
+                </nl-article-card>
+            </div>
+            <div class="col-md-3">
+                <nl-article-card>
+                    <header><img src="http://lorempixel.com/400/200/" alt="" class="img-responsive" /></header>
+                    <h6>Gutsy Scherzer helps Tigers force game 5</h6>
+                    <footer class="row">
+                        <div class="col-md-8">
+                            The Guardian
+                        </div>
+                        <div class="col-md-4">
+                            Oct 14
+                        </div>
+                    </footer>
+                </nl-article-card>
+            </div>
+            <div class="col-md-3">
+                <nl-article-card>
+                    <header><img src="http://lorempixel.com/400/200/" alt="" class="img-responsive" /></header>
+                    <h6>Gutsy Scherzer helps Tigers force game 5</h6>
+                    <footer class="row">
+                        <div class="col-md-8">
+                            The Guardian
+                        </div>
+                        <div class="col-md-4">
+                            Oct 14
+                        </div>
+                    </footer>
+                </nl-article-card>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+<div class="row margin-top-20">
+    <div id="accordion1" class="panel-group accordion col-md-12">
+        <script type="text/ng-template" id="/public/js/views/comments.html">
+            <% include ../../public/js/views/comments.html %>
+        </script>
+        <nl-comments target="article" count="count" type="article"></nl-comments>
+    </div>
+</div>
+
+</section>
+
+<% include ../common/footer %>

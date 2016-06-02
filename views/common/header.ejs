@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app="TinyNewsApp"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" ng-app="TinyNewsApp"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" ng-app="TinyNewsApp"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="TinyNewsApp"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title><%- title %></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="//fonts.googleapis.com/css?family=Open+Sans|Architects+Daughter:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <link href="/assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/plugins/jquery-notific8/jquery.notific8.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/css/components.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
+
+    <% if (!config.theme || (config.theme && config.theme == 'light')) { %>
+    <link id="style_color" href="/assets/admin/layout/css/themes/light.css" rel="stylesheet" type="text/css"/>
+    <% } else { %>
+    <link id="style_color" href="/assets/admin/layout/css/themes/<%- config.theme %>.css" rel="stylesheet" type="text/css"/>
+    <% } %>
+    <link href="/assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+    <!-- END THEME STYLES -->
+    <link rel="shortcut icon" href="/favicon.ico"/>
+
+    <% if (config.Assets.do_minification) { %>
+    <link rel="stylesheet" href="/combined.min.css" />
+    <% } else { %>
+    <% get_assets('css').forEach(function(file) { %><link rel="stylesheet" href="<%- file %>" /><% }) %>
+    <% } %>
+    <% if (data) { %><script>var NL_PRELOAD_DATA = <%- JSON.stringify(data) %>;</script><% } %>
+    <script>var NL_USER_DATA = <%- (token) ? JSON.stringify(token) : 'false' %>;</script>
+    <% if (flash) { %><script>var NL_FLASH_MSG = <%- JSON.stringify(flash) %>;</script><% } %>
+    <!-- page plugins -->
+    <% if (typeof plugins_css!="undefined") { %>
+        <% for(var i=0; i<plugins_css.length; i++) { %>
+    <link rel="stylesheet" href="<%= config.web_host %>assets/global/plugins/<%=plugins_css[i]%>" />
+        <% } %>
+    <% } %>
+    <script>var NL_API_HOST = '<%- config.api_host %>';</script>
+    <script>var NL_FEEDS_HOST = '<%- config.feeds_host %>';</script>
+    <script>var NL_WEB_HOST = '<%- config.web_host %>';</script>
+    <script>var NL_WS_HOST = '<%- config.ws_host %>';</script>
+</head>
+<body<% if (config.body_classes && config.body_classes.length) { %> class="<%= config.body_classes.join(' ') %>"<% } %>>
+
+<div id="alerts-container" class="row" ng-controller="AlertsController" ng-cloak>
+    <div class="col-md-3" id="topright-alert-container">
+        <div ng-repeat="alert in alerts | filter:{ position:'left', status:0 } | orderBy:'timestamp':false" class="posrel alert-item alert alert-{{alert.style}}">
+            <i class="fa fa-{{alert.icon}}"></i>
+            <span ng-bind="alert.message"></span>
+            <a ng-click="remove(alert)" class="fa fa-times text-{{alert.style}}"></a>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-4" id="center-alert-container">
+        <div ng-repeat="alert in alerts | filter:{ position:'center', status:0 } | orderBy:'timestamp':false" class="posrel alert-item alert alert-{{alert.style}}">
+            <i class="fa fa-{{alert.icon}}"></i>
+            <span ng-bind="alert.message"></span>
+            <a ng-click="remove(alert)" class="fa fa-times text-{{alert.style}}"></a>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3" id="topright-alert-container">
+        <div ng-repeat="alert in alerts | filter:{ position:'right', status:0 } | orderBy:'timestamp':false" class="posrel alert-item alert alert-{{alert.style}}">
+            <i class="fa fa-{{alert.icon}}"></i>
+            <span ng-bind="alert.message"></span>
+            <a ng-click="remove(alert)" class="fa fa-times text-{{alert.style}}"></a>
+        </div>
+    </div>
+</div>
+
+<% if (!config.hide_nav) { %>
+<% include navbar %>
+<% } %>
+

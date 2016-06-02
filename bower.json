@@ -1,0 +1,21 @@
+{
+  "name": "tinynews-front",
+  "description": "TinyNews.com",
+  "version": "0.0.2",
+  "homepage": "http://tinynews.com",
+  "license": "Copyright",
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.26",
+    "angular-cookies": "1.2.26",
+    "angular-animate": "1.2.26",
+    "angular-resource": "1.2.26",
+    "angular-route": "1.2.26",
+    "angular-loader": "1.2.26",
+    "angular-mocks": "1.2.26",
+    "moment": "~2.7.0",
+    "angular-scroll": "~0.6.1",
+    "ng-file-upload-shim": "~1.6.4",
+    "ng-file-upload": "~1.6.4"
+  }
+}

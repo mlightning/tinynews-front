@@ -1,0 +1,173 @@
+<div class="page-header navbar navbar-fixed-top">
+    <div class="page-header-inner container">
+
+        <div class="page-logo">
+            <li class="mega-menu-dropdown">
+                <a data-hover="dropdown" data-close-others="true" data-toggle="dropdown" href="javascript:;" class="dropdown-toggle">TinyNews <i class="fa fa-angle-down"></i></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <div class="mega-menu-content">
+                            <div class="row">
+                                <ul class="col-md-4 mega-menu-submenu">
+                                    <li><h3>Utilities</h3></li>
+                                    <li><a href="http://screens.referendum.com"><i class="fa fa-angle-right"></i> Referendum</a></li>
+                                    <li><a href="http://screens.speaknow.com"><i class="fa fa-angle-right"></i> SpeakNow</a></li>
+                                    <li><a href="http://screens.sumpton.com"><i class="fa fa-angle-right"></i> Sumpton </a></li>
+                                </ul>
+                                <ul class="col-md-4 mega-menu-submenu">
+                                    <li><h3>Community</h3></li>
+                                    <li><a href="http://screens.frigid.com"><i class="fa fa-angle-right"></i> Frigid </a></li>
+                                    <li><a href="http://screens.sadist.com"><i class="fa fa-angle-right"></i> Sadist </a></li>
+                                    <li><a href="http://screens.equat.com"><i class="fa fa-angle-right"></i> Equat </a></li>
+                                    <li><a href="http://screens.yamcafe.com"><i class="fa fa-angle-right"></i> Yam Cafe </a></li>
+                                </ul>
+                                <ul class="col-md-4 mega-menu-submenu">
+                                    <li><h3>Humans</h3></li>
+                                    <li><a href="http://screens.humans1.com"><i class="fa fa-angle-right"></i> Humans 1.now </a></li>
+                                    <li><a href="http://screens.humans2.com"><i class="fa fa-angle-right"></i> Humans 2.0 </a></li>
+                                    <li><a href="http://screens.humans3.com"><i class="fa fa-angle-right"></i> Humans 3.0 </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <div class="menu-toggler sidebar-toggler hide"></div>
+        </div>
+
+        <div class="hor-menu hor-menu-light hidden-sm hidden-xs">
+            <ul class="nav navbar-nav">
+                <!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the horizontal opening on mouse hover -->
+                <li class="classic-menu-dropdown">
+                    <a href="/"><i class="fa fa-home fa-lg"></i>&nbsp;Home <span class="selected"></span></a>
+                </li>
+
+                <li class="classic-menu-dropdown">
+                    <a href="/publishers/#/all/"><i class="fa fa-newspaper-o fa-lg"></i>&nbsp;Publishers <span></span></a>
+                </li>
+
+                <li class="classic-menu-dropdown">
+                    <a href="/journalists/#/all/"><i class="fa fa-pencil-square-o fa-lg"></i>&nbsp;Journalists <span></span></a>
+                </li>
+
+                <li class="mega-menu-dropdown">
+                    <a data-hover="dropdown" data-close-others="true" data-toggle="dropdown" href="javascript:;" class="dropdown-toggle">
+                        <i class="fa fa-at fa-lg"></i>&nbsp;Us <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <!-- Content container to add padding -->
+                            <div class="mega-menu-content">
+                                <div class="row">
+                                    <ul class="col-md-4 mega-menu-submenu">
+                                        <li><h3>About</h3></li>
+                                        <li>
+                                            <a href="/about"><i class="fa fa-angle-right"></i> About Us </a>
+                                        </li>
+                                        <li>
+                                            <a href="/about/ratings"><i class="fa fa-angle-right"></i> Our Ratings </a>
+                                        </li>
+                                    </ul>
+                                    <ul class="col-md-4 mega-menu-submenu">
+                                        <li><h3>Contact</h3></li>
+                                        <li>
+                                            <a href="/contact"><i class="fa fa-angle-right"></i> Contact Us </a>
+                                        </li>
+                                    </ul>
+                                    <ul class="col-md-4 mega-menu-submenu">
+                                        <li><h3>Questions</h3></li>
+                                        <li>
+                                            <a href="/faq"><i class="fa fa-angle-right"></i> FAQ </a>
+                                        </li>
+                                        <li>
+                                            <a href="/privacy"><i class="fa fa-angle-right"></i> Privacy </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"></div>
+
+        <% if (token.user['@rid']) { %>
+            <div class="top-menu">
+                <ul class="nav navbar-nav pull-right">
+                    <!--<li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar" ng-controller="NotificationsController">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <i class="fa fa-envelope"></i>
+                            <span class="badge badge-default" ng-if="notifications.length" ng-bind="notifications.length"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <p>
+                                    You have
+                                    <span ng-if="notifications.length" ng-bind="notifications.length"></span>
+                                    <span ng-if="!notifications.length">no</span>
+                                    new messages
+                                </p>
+                            </li>
+                            <li>
+                                <ul class="dropdown-menu-list scroller" style="height: 250px;">
+                                    < ! - -<li>
+                                        <a href="inbox.html?a=view">
+                                            <span class="photo"><img src="/assets/admin/layout/img/avatar2.jpg" alt="" /></span>
+                                            <span class="subject">
+                                                <span class="from"> Lisa Wong </span>
+                                                <span class="time"> Just Now </span>
+                                            </span>
+                                            <span class="message">Vivamus sed auctor nibh congue nibh. auctor nibh auctor nibh...</span>
+                                        </a>
+                                    </li>- - >
+                                </ul>
+                            </li>
+                            < ! - -<li class="external">
+                                <a href="inbox.html"> See all messages <i class="m-icon-swapright"></i></a>
+                            </li>- - >
+                        </ul>
+                    </li>-->
+                    <li class="dropdown dropdown-user <% if (section == 'profile') { %>active<% } %>">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <img alt="" class="img-rounded" src="<%- token.user.imageUrl %>" width="30" height="30" />
+                            <span class="username"> <%- token.user.first_name %> <%- token.user.last_name %> </span>
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/profile"><i class="fa fa-user"></i> My Profile </a></li>
+                            <li><a href="/profile/settings/#/"><i class="fa fa-cog"></i> Account Settings </a></li>
+                            <li><a href="/profile/settings/#/password"><i class="fa fa-lock"></i> Change Password </a></li>
+                            <li><a href="/profile/feed"><i class="fa fa-sliders"></i> My Feed Settings </a></li>
+                            <li class="divider"></li>
+                            <li><a href="/logout"><i class="fa fa-key"></i> Log Out </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        <% } else { %>
+            <div class="hor-menu hor-menu-light pull-right">
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown dropdown-quick-sidebar-toggler">
+                        <a class="dropdown-toggle" href="/register">Register</a>
+                    </li>
+                    <li class="dropdown dropdown-quick-sidebar-toggler">
+                        <a class="dropdown-toggle" href="/login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        <% } %>
+
+    </div>
+</div>
+
+<div class="clearfix"></div>
+
+<% if (!config.hide_nav) { %>
+<div class="container">
+    <div class="page-container">
+        <div class="page-content-wrapper">
+            <div class="page-content">
+<% } %>

@@ -1,0 +1,86 @@
+<% include ../common/header %>
+
+<section>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title">Article Feed</h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/feed">Feed</a>
+                </li>
+
+                <% if (token.user['@rid']) { %>
+                <li class="btn-group pull-right">
+                    <a href="/profile/feed/" class="btn btn-primary btn-fit-height" style="color: white;">
+                        <i class="fa fa-sliders" style="font-size: 17px;"></i>
+                    </a>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" ng-controller="LiveFeedController">
+
+            <div class="tabbable tabbable-custom tabbable-custom-profile">
+                <ul class="nav nav-tabs">
+                    <% if (token.user['@rid']) { %>
+                    <li ng-class="{ 'active': path == '/feed' || path == '/' || !path }">
+                        <a href="#feed" data-toggle="tab">
+                            My Feed
+                            <span class="badge badge-roundless badge-success" ng-bind="articles.length || 0"></span>
+                        </a>
+                    </li>
+                    <% } %>
+                    <li ng-class="{ 'active': path == '/featured' }">
+                        <a href="#featured" data-toggle="tab">
+                            Featured
+                            <span class="badge badge-roundless badge-success" ng-bind="featured.length || 0"></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+
+                    <script type="text/ng-template" id="nl_publisher_card.html">
+                        <% include ../../public/js/views/nl_publisher_card.html %>
+                    </script>
+                    <script type="text/ng-template" id="nl_journalist_card.html">
+                        <% include ../../public/js/views/nl_journalist_card.html %>
+                    </script>
+                    <script type="text/ng-template" id="/public/js/views/nl_feed_entry.html">
+                        <% include ../../public/js/views/nl_feed_entry.html %>
+                    </script>
+
+                    <% if (token.user['@rid']) { %>
+                    <div class="tab-pane" id="tab_feed" ng-class="{ 'active': path == '/feed' || path == '/' || !path }">
+                        <nl-feed-entry
+                            class="portlet grey-cararra box hide"
+                            ng-repeat="(key, article) in articles | orderBy: 'post_date'"
+                            article="article"
+                            ng-class="{ 'show': 'true' }"
+                            style="margin-bottom: 2px; position: relative;"
+                        ></nl-feed-entry>
+                    </div>
+                    <% } %>
+
+                    <div class="tab-pane" id="tab_featured" ng-class="{ 'active': path == '/featured' }">
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<% include ../common/footer %>

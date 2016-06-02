@@ -1,0 +1,66 @@
+<% include ../common/header %>
+
+<section ng-controller = "EditorsChoiceController">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title">
+                Editor's Choice
+            </h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/editors-choice">Editor's Choice</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-default" role="navigation">
+        <ul class="nav navbar-nav">
+            <li ng-class="{ 'active': tab == 'editors-choice' }"><a ng-href="/editors-choice/#/editors-choice" ng-click="change_tab('editors-choice')">Editor's Choice</a></li>
+            <li ng-class="{ 'active': tab == 'most-reviewed' }"><a ng-href="/editors-choice/#/most-reviewed" ng-click="change_tab('most-reviewed')">Most Reviewed</a></li>
+            <% if (token && token.user) { %>
+            <li ng-class="{ 'active': tab == 'my-feed' }"><a ng-href="/editors-choice/#/my-feed" ng-click="change_tab('my-feed')">My Feed</a></li>
+            <% } %>
+        </ul>
+        <ul class="nav navbar-nav navbar-right navbar-form">
+            <li>
+                <div class="btn-group">
+                    <button class="btn btn-default" ng-class="{ disabled: current_page == 0 }" ng-click="set_page(current_page - 1)"><i class="fa fa-chevron-left"></i></button>
+                    <button class="btn btn-default" ng-class="{ disabled: current_page == no_of_pages() - 1 }" ng-click="set_page(current_page + 1)" ><i class="fa fa-chevron-right"></i></button>
+                </div>
+                &nbsp;&nbsp;
+            </li>
+        </ul>
+    </nav>
+
+    <div>
+        <script type="text/ng-template" id="nl_list_articles.html">
+            <% include ../../public/js/views/nl_list_articles.html %>
+        </script>
+        <script type="text/ng-template" id="nl_article_card.html">
+            <% include ../../public/js/views/nl_article_card.html %>
+        </script>
+        <nl-list-articles items="displayed"></nl-list-articles>
+
+        <nav class="navbar navbar-default" role="navigation">
+            <ul class="nav navbar-nav navbar-right navbar-form">
+                <li>
+                    <div class="btn-group">
+                        <button class="btn btn-default" ng-class="{ disabled: current_page == 0 }" ng-click="set_page(current_page - 1)"><i class="fa fa-chevron-left"></i></button>
+                        <button class="btn btn-default" ng-class="{ disabled: current_page == no_of_pages() - 1 }" ng-click="set_page(current_page + 1)" ><i class="fa fa-chevron-right"></i></button>
+                    </div>
+                    &nbsp;&nbsp;
+                </li>
+            </ul>
+        </nav>
+        <br />
+    </div>
+
+</section>
+
+<% include ../common/footer %>

@@ -1,0 +1,23 @@
+<div class="row" id="list_view_users">
+    <div class="col-md-12">
+        <table class="table table-striped table-hover">
+            <tr ng-repeat="user in filtered = (users | filter:filter.query) | startFrom: current_page * page_size  | limitTo:page_size" >
+                <td width="40">
+                    <a href="/profile/{{ user.handle }}">
+                        <img width="30" height="30" ng-src="{{ user.imageUrl || '/assets/admin/pages/media/profile/profile-img.png' }}" alt="" />
+                    </a>
+                </td>
+                <td>
+                    <a href="/profile/{{ user.handle }}">{{ user.first_name }} {{ user.last_name }}</a>
+                </td>
+                <td ng-bind="user.email"></td>
+                <td width="250" class="text-right">
+                    <button ng-click="login_as( user.handle )" class="btn btn-xs btn-default">Login</button>
+                    <button ng-if="user.status == 0" ng-click="resend_confirmation( user['@rid'] )" class="btn btn-xs btn-primary">Resend Confirmation</button>
+                    <button ng-if="user.status == 1" ng-click="lock_user( user['@rid'] )" class="btn btn-xs btn-warning">Lock</button>
+                    <button ng-if="user.status == 2" ng-click="unlock_user( user['@rid'] )" class="btn btn-xs btn-success">Unlock</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

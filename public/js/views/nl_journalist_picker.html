@@ -1,0 +1,25 @@
+<div class="modal fade" id="nl_journalist_picker">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Select a Journalist</h4>
+            </div>
+            <div class="modal-body" style="padding-bottom: 0;">
+                <form>
+                    <div class="form-group">
+                        <label>Filter Journalists</label>
+                        <input type="text" class="form-control" name="filter" ng-model="search.name" />
+                    </div>
+                </form>
+                <div class="list-group">
+                    <a ng-repeat="journalist in journalists | filter:search" href="javascript: void(0);" class="list-group-item" ng-bind="journalist.first_name + ' ' + journalist.last_name" ng-click="select(journalist)" ng-class="{ 'active': journalist.selected }"></a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" ng-disabled="!selected" ng-click="finish()">Select</button>
+            </div>
+        </div>
+    </div>
+</div>

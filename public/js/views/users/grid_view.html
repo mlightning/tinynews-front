@@ -1,0 +1,24 @@
+<div class="row" id="grid_view_users">
+    <div class="col-md-4" ng-repeat="user in filtered = (users | filter:filter.query) | startFrom: current_page * page_size  | limitTo:page_size" >
+        <div class="media margin-bottom-15">
+            <a class="pull-left" href="/profile/{{ user.handle }}">
+                <img width="70" class="media-object" src="/assets/admin/pages/media/profile/profile-img.png" src="{{ user.imageUrl || '/assets/admin/pages/media/profile/profile-img.png' }}" alt="profile image">
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="/profile/{{ user.handle }}">
+                        <span>{{ user.first_name }} {{ user.last_name }}</span>
+                    </a>
+                </h4>
+                <div>{{user.email}}</div>
+                <div style="padding-top: 5px;">
+                    <button ng-click="login_as( user.handle )" class="btn btn-xs btn-default">Login</button> &nbsp;&nbsp;
+                    <button ng-if="user.status == 0" ng-click="resend_confirmation( user['@rid'] )" class="btn btn-xs btn-primary">Resend Confirmation</button>
+                    <button ng-if="user.status == 1" ng-click="lock_user( user['@rid'] )" class="btn btn-xs btn-warning">Lock</button>
+                    <button ng-if="user.status == 2" ng-click="unlock_user( user['@rid'] )" class="btn btn-xs btn-success">Unlock</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

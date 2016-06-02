@@ -1,0 +1,46 @@
+<div class="portlet-title">
+    <div class="caption">
+        <a ng-href="{{article.url}}" class="text-success" target="_blank"><i class="fa fa-external-link" style="font-size: 17px;"></i></a>
+        &nbsp;<a ng-href="/article/{{article.slug}}"><span ng-bind="article.title"></span></a>
+        {{ article.is_open }}
+    </div>
+    <div class="tools">
+        <nl-star-rating rating="article.rating" class="feed-entry"></nl-star-rating>
+        <a class="panel-state" ng-class="{ 'collapse': article.is_open, 'expand': !article.is_open }" href="javascript: void(0);" ng-click="toggle()"></a>
+    </div>
+</div>
+<div class="portlet-body grey-cararra" ng-class="{ 'display-hide': !article.is_open }">
+    <div class="row">
+        <div class="col-md-6">
+            <div style="padding-bottom: 4px;"><span class="text-muted" ng-bind="article.post_date"></span></div>
+            <p ng-bind="article.point" ng-if="article.point"></p>
+            <div ng-if="!article.point" class="text-warning">
+                <p><strong>This article has not yet been summarized.</strong></p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <nl-publisher-card publisher="article.publisher"></nl-publisher-card>
+        </div>
+        <div class="col-md-3">
+            <nl-journalist-card journalist="article.journalist"></nl-journalist-card>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row" style="margin-top: 5px; margin-bottom: -5px;">
+                <div class="col-md-8">
+                    <span ng-repeat="tag in article.tags">
+                        <span class="label label-default">
+                            <i class="fa fa-tag"></i>
+                            <span ng-bind="tag.name"></span>
+                        </span>&nbsp;
+                    </span>
+                </div>
+                <div class="col-md-4 text-right">
+                    <a nl-btn-like data-href="{{ share_domain }}article/{{ article.slug }}/" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></a>
+                    <a nl-btn-tweet data-url="{{ share_domain }}article/{{ article.slug }}/" data-text="{{ article.title }}"></a>
+                    <a nl-btn-gplusone id="nl-article-{{ article.slug }}" data-url="{{ share_domain }}article/{{ article.slug }}/" data-text="{{ article.title }}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

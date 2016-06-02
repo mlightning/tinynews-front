@@ -1,0 +1,17 @@
+<div class="media margin-bottom-15 data-card">
+    <a class="pull-left" href="/publisher/{{ publisher.slug }}/#/">
+        <img width="70" height="70" class="img-rounded" ng-src="{{ publisher.imageUrl || '/images/profile_default_publisher.png' }}" alt="profile image">
+    </a>
+    <div class="media-body">
+        <h4 class="media-heading">
+            <a href="/publisher/{{ publisher.slug }}/#/">
+                <span ng-bind="publisher.name"></span>
+            </a>
+        </h4>
+        <nl-star-rating rating="publisher.rating"></nl-star-rating>
+        <div style="padding-top: 5px;" ng-if="registered">
+            <button ng-if="!following" ng-click="toggle_following()" class="btn btn-xs btn-default follow">follow</button>
+            <button ng-if="following" ng-click="toggle_following()" class="btn btn-xs btn-success follow following">following</button>
+        </div>
+    </div>
+</div>

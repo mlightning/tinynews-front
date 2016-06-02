@@ -1,0 +1,59 @@
+/* here you can put your own css to customize and override the theme */
+
+body {
+
+}
+
+h1 {
+  font-size: 30px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 20px;
+}  
+
+h4 {
+}  
+
+h5 {
+  font-weight: bold;
+}  
+
+h6 {
+  color: #888;
+  font-size: 12px;
+}
+
+dt {
+  font-weight: normal;
+}
+
+dd {
+  margin-left: 30px;
+}
+
+.page-logo a {
+  color: white;
+  display: block;
+  font-family: "Architects Daughter","Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 22px;
+  padding: 6px 0 0 0;
+}
+
+.panel-title > a {
+  /* color: #428bca; */
+  font-size: 14px;
+}
+
+.follow {
+  width: 65px;
+  height: 24px;
+}
+
+.rating {
+  color: #3fd5c0;
+}

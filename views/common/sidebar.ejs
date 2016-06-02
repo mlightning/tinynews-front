@@ -1,0 +1,97 @@
+<!-- BEGIN SIDEBAR -->
+<div class="page-sidebar-wrapper">
+
+    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+    <div class="page-sidebar navbar-collapse collapse">
+
+        <!-- BEGIN SIDEBAR MENU -->
+        <ul class="page-sidebar-menu" data-auto-scroll="false" data-auto-speed="200">
+
+            <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+            <li class="sidebar-toggler-wrapper">
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+                <div class="sidebar-toggler"></div>
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+
+            <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
+            <li class="sidebar-search-wrapper" ng-controller="SearchController">
+                <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+                <!-- DOC: Apply "sidebar-search-bordered" class the below search form to have bordered search box -->
+                <!-- DOC: Apply "sidebar-search-bordered sidebar-search-solid" class the below search form to have bordered & solid search box -->
+                <form class="sidebar-search">
+                    <a href="javascript:;" class="remove"></a>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search..." ng-model="query" />
+                        <span class="input-group-btn">
+                            <!-- DOC: value=" ", that is, value with space must be passed to the submit button -->
+                            <input class="btn submit" type="submit" value=" " />
+                        </span>
+                    </div>
+                </form>
+                <!-- END RESPONSIVE QUICK SEARCH FORM -->
+            </li>
+
+            <li class="start ">
+                <a href="javascript:;">
+                    <i class="fa fa-bookmark-o"></i>
+                    <span class="title">Journalists </span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="/journalists">Journalists </a>
+                    </li>
+                    <li>
+                        <a href="/journalist/journalist">Journalist </a>
+                    </li>
+                    <li>
+                        <a href="/journalist/journalist/articles">Journalist Articles </a>
+                    </li>
+                    <li>
+                        <a href="/journalist/journalist/followers">Journalist's Followers </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="fa fa-bookmark-o"></i>
+                    <span class="title">Articles </span>
+                    <span class="arrow "></span>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="/articles">Articles </a>
+                    </li>
+                    <li>
+                        <a href="/article/article">Article </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="fa fa-bookmark-o"></i>
+                    <span class="title">Publishers </span>
+                    <span class="arrow "></span>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="/publishers">Publishers </a>
+                    </li>
+                    <li>
+                        <a href="/publisher/publisher">Publisher </a>
+                    </li>
+                    <li>
+                        <a href="/publisher/publisher/articles">Publisher Articles </a>
+                    </li>
+                    <li>
+                        <a href="/publisher/publisher/followers">Publisher's Followers </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!-- END SIDEBAR MENU -->
+    </div>
+</div>
+<!-- END SIDEBAR -->

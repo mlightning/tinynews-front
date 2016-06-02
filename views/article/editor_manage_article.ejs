@@ -1,0 +1,207 @@
+<% include ../common/header %>
+
+<section ng-controller="ArticleEditorController">
+    <div class="row">
+
+        <div class="col-md-12">
+            <h3 class="page-title">
+                <%- data.article.title %>
+            </h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/articles">Articles</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/article/<%- data.article.slug %>"><%- data.article.title %></a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/article/<%- data.article.slug %>/edit">Edit</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-md-7">
+            <div class="panel panel-default row">
+                <div class="panel-body">
+                    <div class="row">
+
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <% if (token.user.permissions['article.admin']) { %>
+                                <label class="form-label">Article Title</label>
+                                <input type="text" class="form-control input-lg" value="<%- data.article.title %>" ng-model="wip.title" ng-change="is_modified = true" />
+                                <% } else { %>
+                                <h3><a href="<%- data.article.url %>"><%- data.article.title %></a></h3>
+                                <% } %>
+                            </div>
+                            <div class="form-group">
+                                <% if (token.user.permissions['article.admin']) { %>
+                                <label class="form-label">Article Slug</label>
+                                <div class="input-group">
+                                    <!--<span class="input-group-addon"><%= config.web_host %>article/</span>-->
+                                    <input type="text" class="form-control" value="<%- data.article.slug %>" ng-model="wip.slug" ng-change="is_modified = true" />
+                                    <span class="input-group-btn">
+                                        <a href="<%= config.web_host %>article/{{wip.slug}}" class="btn btn-default" target="_blank"><i class="fa fa-link"></i></a>
+                                    </span>
+                                </div>
+                                <% } else { %>
+                                <a href="<%= config.web_host %>article/<%- data.article.slug %>" target="_blank"><%= config.web_host %>article/<%- data.article.slug %></a>
+                                <% } %>
+                            </div>
+                            <div>
+                                <a href="/publisher/<%- data.article.publisher.slug %>" ng-bind="wip.publisher.name"><%= data.article.publisher.name %></a>
+                                <% if (token.user.permissions['article.admin']) { %>
+                                <a href="#" class="typcn typcn-pencil" data-toggle="modal" data-target="#nl_publisher_picker"></a>
+                                <nl-publisher-picker ng-model="wip.publisher"></nl-publisher-picker>
+                                <% } %>
+                                - <a href="/journalist/<%- data.article.journalist.slug %>" ng-bind="wip.journalist.first_name + ' ' + wip.journalist.last_name"><%= data.article.journalist.first_name %> <%= data.article.journalist.last_name %></a>
+                                <% if (token.user.permissions['article.admin']) { %>
+                                <a href="#nl_journalist_picker" class="typcn typcn-pencil" data-toggle="modal"></a>
+                                <nl-journalist-picker ng-model="wip.journalist"></nl-journalist-picker>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="text-right">
+                                11:15 am October 14, 2013
+                            </div>
+                            <div>
+                                <img src="http://lorempixel.com/300/230/" alt="" class="img-responsive" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <hr />
+
+                        <% if (token.user.permissions['article.admin']) { %>
+                        <div class="panel-group col-md-12" id="article-body" ng-bind-html="highlighted_body()" contenteditable ng-model="wip.highlighted_body" ng-change="update_body()" style="margin-bottom: 0; white-space: pre-line;">
+                            <%= data.article.body %>
+                        </div>
+                        <% } else { %>
+                        <div class="panel-group col-md-12" id="article-body" ng-bind-html="highlighted_body()" style="margin-bottom: 0; white-space: pre-line;">
+                            <%= data.article.body %>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5" ng-cloak>
+
+            <div class="row">
+                <div class="col-md-9">
+                    <button class="btn btn-primary btn-lg btn-block" ng-click="save()" ng-disabled="!is_modified || processing">Publish Changes</button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-danger btn-lg btn-block" ng-click="revert()" ng-disabled="!is_modified || processing">Revert</button>
+                </div>
+            </div>
+
+            <hr />
+
+            <h4>Main Point</h4>
+            <div class="form-group">
+                <input type="text" name="main_point" class="form-control" ng-model="wip.point" ng-change="is_modified = true" />
+            </div>
+
+            <hr />
+
+            <h4>Add Notes</h4>
+            <form name="add_item" ng-submit="add(wip.note)">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <select class="form-control" ng-options="option.text for option in paste_options" ng-model="selected_paste_type"></select>
+                    </span>
+                    <!--<input type="text" class="form-control" placeholder="paste quote here" ng-model="wip.note.quote" />-->
+                </div>
+                <br />
+                <div class="form-group">
+                    <label>Note</label>
+                    <textarea class="form-control" ng- disabled="!wip.note.quote" ng-model="wip.note.note" style="max-width: 100%;"></textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block" type="submit" ng-disabled="!wip.note.note"><i class="typcn typcn-plus"></i>&nbsp Add Fact/Statement</button>
+                </div>
+            </form>
+
+            <hr />
+
+            <h5>Immediate Facts</h5>
+            <ul class="meta-category">
+                <li ng-repeat="fact in wip.facts.immediate">
+                    <div class="panel panel-default">
+                        <!--<div class="panel-body"><i ng-bind="fact.quote" style="background-color: {{highlighters['fact.immediate']}};"></i></div>-->
+                        <div class="panel-footer" ng-bind="fact.note"></div>
+                        <a href="javascript: void(0)" class="typcn typcn-delete delete" ng-click="remove(fact, 'facts')"></a>
+                    </div>
+                </li>
+                <li ng-if="!wip.facts.immediate.length">
+                    <div class="text-center">No Immediate Facts</div>
+                </li>
+            </ul>
+
+            <h5>Contextual Facts</h5>
+            <ul class="meta-category">
+                <li ng-repeat="fact in wip.facts.contextual">
+                    <div class="panel panel-default">
+                        <!--<div class="panel-body"><i ng-bind="fact.quote" style="background-color: {{highlighters['fact.contextual']}};"></i></div>-->
+                        <div class="panel-footer" ng-bind="fact.note"></div>
+                        <a href="javascript: void(0)" class="typcn typcn-delete delete" ng-click="remove(fact, 'facts')"></a>
+                    </div>
+                </li>
+                <li ng-if="!wip.facts.contextual.length">
+                    <div class="text-center">No Contextual Facts</div>
+                </li>
+            </ul>
+
+            <h5>Immediate Statements</h5>
+            <ul class="meta-category">
+                <li ng-repeat="statement in wip.statements.immediate">
+                    <div class="panel panel-default">
+                        <!--<div class="panel-body"><i ng-bind="statement.quote" style="background-color: {{highlighters['statement.immediate']}};"></i></div>-->
+                        <div class="panel-footer" ng-bind="statement.note"></div>
+                        <a href="javascript: void(0)" class="typcn typcn-delete delete" ng-click="remove(statement, 'statements')"></a>
+                    </div>
+                </li>
+                <li ng-if="!wip.statements.immediate.length">
+                    <div class="text-center">No Immediate Statements</div>
+                </li>
+            </ul>
+
+            <h5>Contextual Statements</h5>
+            <ul class="meta-category">
+                <li ng-repeat="statement in wip.statements.contextual">
+                    <div class="panel panel-default">
+                        <!--<div class="panel-body"><i ng-bind="statement.quote" style="background-color: {{highlighters['statement.contextual']}};"></i></div>-->
+                        <div class="panel-footer" ng-bind="statement.note"></div>
+                        <a href="javascript: void(0)" class="typcn typcn-delete delete" ng-click="remove(statement, 'statements')"></a>
+                    </div>
+                </li>
+                <li ng-if="!wip.statements.contextual.length">
+                    <div class="text-center">No Contextual Statements</div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="processing_modal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <p class="text-center" style="padding-top: 15px; padding-bottom: 15px; margin: 0;">Saving Article ...</p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<% include ../common/footer %>

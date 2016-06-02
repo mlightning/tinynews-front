@@ -1,0 +1,16 @@
+{
+    "analytics_id": "UA-XXXXX-X",
+    "server_port": 41080,
+    "Assets": {
+        "do_minification": false
+    },
+    "api_host": "http://dev1.tinynews.com:8080/api",
+    "web_host": "http://dev1.tinynews.com:8080/",
+    "ws_host": "http://dev1.tinynews.com:8080/",
+    "body_classes": ["page-boxed", "page-header-fixed"],
+
+    "images_cdn": {
+        "server": "http://files1.tinynews.com:3000",
+        "path": "/files/sites/tinynews"
+    }
+}

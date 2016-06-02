@@ -1,0 +1,26 @@
+<% include header %>
+
+<link href="/assets/admin/pages/css/error.css" rel="stylesheet" type="text/css"/>
+
+<div class="row">
+    <div class="col-md-12 page-404" ng-controller="FileNotFoundController">
+        <div class="number">404</div>
+        <div class="details">
+            <h3>Oops! You're lost.</h3>
+            <p>
+                We can not find the page you're looking for.<br/>
+                <a href="index.html"> Return home </a> or try the search bar below.
+            </p>
+            <form action="/search" ng-submit="do_search()" onsubmit="return false;">
+                <div class="input-group input-medium">
+                    <input type="text" class="form-control" placeholder="keyword..." ng-model="query" />
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn blue"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<% include footer %>

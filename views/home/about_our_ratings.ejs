@@ -1,0 +1,117 @@
+<% include ../common/header %>
+
+<section ng-controller="AboutOurRatingsController">
+    <div class="row">
+        <div class="col-md-12">
+
+            <h3 class="page-title">
+                About Our Ratings
+            </h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/"> Home </a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/about_our_ratings"> About Our Ratings </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    
+    <div class="row text-center">
+    			<div class="col-md-12">
+    			    <p>TinyNews was born out of a need to establish a set of standards to apply to news articles and journalism so that readers can identify the good and the bad of what the internet has to offer.</p>
+    			    <p>After much research, writing and collaboration, we have produced our four simple categories used to determine the quality of a news article:</p>
+    			    <br />
+    			</div>
+                <div class="col-md-12">
+                    <div class="tabbable tabbable-custom tabbable-custom-profile">
+                        <ul class="nav nav-tabs nav-justifed">
+                            <li class="active" ng-class="{ 'active': path == '/importance'  || path == '/' || !path  }">
+                                <a href="#importance" data-toggle="tab">
+                                    Importance
+                                </a>
+                            </li>
+                            <li ng-class="{ 'active': path == '/factuality' }">
+                                <a href="#factuality" data-toggle="tab">
+                                    Factuality
+                                </a>
+                            </li>
+                            <li ng-class="{ 'active': path == '/transparency' }">
+                                <a href="#transparency" data-toggle="tab">
+                                    Transparency
+                                </a>
+                            </li>
+                            <li ng-class="{ 'active': path == '/independence' }">
+                                <a href="#independence" data-toggle="tab">
+                                    Independence                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                        
+                            <div class="tab-pane" id="tab_facts" class="active" ng-class="{ 'active':  path == '/importance' || !path }">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">                                            
+										    <p>Good jouralism needs to be important. Good journalism should contain essential information for people who live in democracies. We need to know what important things are going on in order to govern ourselves.</p>
+										    <hr />
+										    <b><p>Articles that earn high ratings in this category contain actionable information that people need to know.</p></b>
+										    <b><p>Articles that earn low ratings in this category contain are information-based entertainment, not news</p></b>
+										    <br />
+										    <p>That's it! if you find an article that excels in all of these articles, you have a good, solid piece of journalism in your hands. If it fails in  these four areas, it's trash!</p>
+										    <p>TinyNews is a community driven project, so we're always looking for people to join in the discussion.</p> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="tab-pane" id="tab_facts" ng-class="{ 'active':  path == '/factuality'}">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">                                            
+										    <p>Good journalism is based on fact. In fact, goos journalism takes readers directly to the facts. A good news article contains more verifiable facts than quotes and analysis. a good news article weighs quotes and statements against established facts.</p>
+										    <hr />
+										    <b><p>Articles that earn high ratings in this category are primarily based on verifiable facts.</p></b>
+										    <b><p>Articles that earn low ratings in this category choose not to state many verifiable facts, and are instead concerned with quotes, statements or analysis</p></b>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="tab-pane" id="tab_facts" ng-class="{ 'active':  path == '/transparency' }">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">                                            
+										    <p>Journalists need to remain independent from those they cover, especially powerful people or organizations. A good journalist will give proportional attention to both sides of a story. A good journalist will not simply accept a statement from a powerful person or organization; she or he will question it, weigh it against established facts, and challenge it if necessary.</p>
+										    <hr />
+										    <b><p>Articles that earn high ratings in this category will show all sides of a story, but will question and challenge those in power.</p></b>
+										    <b><p>Articles that earn low ratings in this category will not show all sides of a story, or will give disproportionate attention to those in positions of power, and will not challenge or question their statements.</p></b>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="tab-pane" id="tab_facts" ng-class="{ 'active':  path == '/independence'}">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">                                            
+										    <p>You shouldn't automatically trust a journalist. A good journalist will prove to you , trough their journalism, that they're supplying good information. This means that all verifiable facts will have sources (preferably direct links to a primary source). This means the journalist explains key decisions about the writing of the piece (for instance, the choice to allow someone to give an anonymous quote).</p>
+										    <hr />
+										    <b><p>Articles that earn high ratings in this category will contain many citations links, and will let the reader in on any journalism-related decisions she or he made</p></b>
+										    <b><p>Articles that earn low ratings in this category will contain no citations, no links--- or they will link to shaky sources.</p></b> 
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                                       
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>
+
+<% include ../common/footer %>

@@ -1,0 +1,52 @@
+<% include ../common/header %>
+
+<link href="/assets/admin/pages/css/login.css" rel="stylesheet" type="text/css" />
+
+<div class="logo">
+    <h2>TinyNews</h2>
+</div>
+
+<div class="login" ng-controller="RegistrationController">
+    <section class="content container">
+
+        <h3>Register for TinyNews</h3>
+
+        <form id="form-reg" name="form_reg" method="post" action="/register" role="form" ng-submit="submit()" novalidate>
+            <div class="form-group" ng-class="{ 'has-success': form_reg.first_name.$valid && form_reg.first_name.$dirty, 'has-error': form_reg.first_name.$invalid && form_reg.first_name.$dirty, 'has-feedback': form_reg.first_name.$dirty }">
+                <label class="control-label" for="txt_Reg_FirstName">First Name</label>
+                <input type="text" class="form-control" name="first_name" id="txt_Reg_FirstName" placeholder="First Name" ng-model="user.first_name" maxlength="32" ng-minlength="1" required />
+                <span class="typcn form-control-feedback" ng-if="form_reg.first_name.$dirty" ng-class="{ 'typcn-tick': form_reg.first_name.$valid, 'typcn-delete': form_reg.first_name.$invalid }"></span>
+            </div>
+            <div class="form-group" ng-class="{ 'has-success': form_reg.last_name.$valid && form_reg.last_name.$dirty, 'has-error': form_reg.last_name.$invalid && form_reg.last_name.$dirty, 'has-feedback': form_reg.last_name.$dirty }">
+                <label class="control-label" for="txt_Reg_LastName">Last Name</label>
+                <input type="text" class="form-control" name="last_name" id="txt_Reg_LastName" placeholder="Last Name" ng-model="user.last_name" maxlength="32" ng-minlength="1" required />
+                <span class="typcn form-control-feedback" ng-if="form_reg.last_name.$dirty" ng-class="{ 'typcn-tick': form_reg.last_name.$valid, 'typcn-delete': form_reg.last_name.$invalid }"></span>
+            </div>
+            <div class="form-group" ng-class="{ 'has-success': form_reg.email.$valid && form_reg.email.$dirty, 'has-error': form_reg.email.$invalid && form_reg.email.$dirty, 'has-feedback': form_reg.email.$dirty }">
+                <label class="control-label" for="txt_Reg_Email">Email Address</label>
+                <input type="email" class="form-control" name="email" id="txt_Reg_Email" placeholder="Email Address" ng-model="user.email" maxlength="128" ng-minlength="5" required />
+                <span class="typcn form-control-feedback" ng-if="form_reg.email.$dirty" ng-class="{ 'typcn-tick': form_reg.email.$valid, 'typcn-delete': form_reg.email.$invalid }"></span>
+            </div>
+            <div class="form-group" ng-class="{ 'has-success': form_reg.password.$valid && form_reg.password.$dirty && is_valid_pass(), 'has-error': form_reg.password.$invalid && form_reg.password.$dirty, 'has-feedback': form_reg.password.$dirty }">
+                <label class="control-label" for="pwd_Reg_Password">Password</label>
+                <input type="password" class="form-control" name="password" id="pwd_Reg_Password" placeholder="Password" ng-model="user.password" maxlength="64" ng-minlength="8" required />
+                <span class="typcn form-control-feedback" ng-if="form_reg.password.$dirty && (is_valid_pass() || form_reg.password.$invalid)" ng-class="{ 'typcn-tick': form_reg.password.$valid, 'typcn-delete': form_reg.password.$invalid }"></span>
+            </div>
+            <p>
+                By joining TinyNews, you agree to our <a href="/terms" target="_blank">terms of service</a>.
+            </p>
+            <div class="form-group text-right">
+                <br />
+                <button ng-click="back()" type="button" id="back-btn" class="btn btn-default pull-left">
+                    <i class="m-icon-swapleft"></i> Cancel 
+                </button>
+                <button type="submit" id="btn_Reg_Submit" class="btn green pull-right" ng-disabled="form_reg.$invalid || !form_reg.$dirty || !valid_pass || processing"> Join TinyNews <i class="m-icon-swapright m-icon-white"></i></button>
+                <span ng-if="processing" class="text-success pull-right" style="line-height: 34px">Please wait...&nbsp;&nbsp;&nbsp;</span>
+                <span>&nbsp;</span>
+            </div>
+        </form>
+    </section>
+</div>
+
+
+<% include ../common/footer %>

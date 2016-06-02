@@ -1,0 +1,11 @@
+<div class="media data-card">
+    <a class="pull-left" href="/journalist/{{ journalist.slug }}/#/">
+        <img width="40" height="40" class="img-rounded" ng-src="{{ journalist.imageUrl || '/images/profile_default_journalist.png' }}" />
+    </a>
+    <div class="media-body">
+        <a href="/journalist/{{ journalist.slug }}/#/">
+            <span ng-bind="journalist.first_name"></span>
+            <span ng-bind="journalist.last_name"></span>
+        </a>
+    </div>
+</div>

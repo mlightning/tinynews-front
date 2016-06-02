@@ -1,0 +1,189 @@
+<div class="well well-sm" ng-if="user">
+    <div class="media">
+        <a href="#" class="pull-left">
+            <img alt="64x64" src="/images/people_73x73.jpg" style="width: 64px; height: 64px;">
+        </a>
+        <div class="media-body">
+            <h5 class="media-heading">
+                <span class="small">Posting as</span> <span ng-bind="user.first_name"></span> <span ng-bind="user.last_name"></span>
+                <span class="small" ng-if="reply_target">&nbsp;&nbsp;Replying to</span>
+                <strong>
+                    <span ng-bind="reply_target.user.first_name"></span>
+                    <span ng-bind="reply_target.user.last_name"></span>
+                </strong>
+            </h5>
+            <form action="javascript:;" ng-submit="do_submit()">
+
+                <!--<div class="form-group">
+                    <label class="col-md-3 control-label">Comment about</label>
+                    <div class="col-md-9">
+                        <div class="radio-list">
+                            <label class="radio-inline">
+                                <div class="radio" id="uniform-topic">
+                                    <div class="radio" id="uniform-optionsArticle">
+                                        <span><input type="radio" checked="" value="option1" id="optionsArticle" name="optionsRadios"></span>
+                                    </div>
+                                </div>
+                                Article
+                            </label>
+                            <label class="radio-inline">
+                                <div class="radio" id="uniform-journalist">
+                                    <div class="radio" id="uniform-optionsJournalist">
+                                        <span><input type="radio" checked="checked" value="option2" id="optionsJournalist" name="optionsRadios"></span>
+                                    </div>
+                                </div>
+                                Journalist
+                            </label>
+                            <label class="radio-inline">
+                                <div class="radio" id="uniform-publisher">
+                                    <div class="radio" id="uniform-optionsPublisher">
+                                        <span class="checked"><input type="radio" checked="" value="option3" id="optionsPublisher" name="optionsRadios"></span>
+                                    </div>
+                                </div>
+                                Publisher
+                            </label>
+                        </div>
+                    </div>
+                </div>-->
+
+                <div class="form-group">
+                    <!-- <label class="col-md-3 control-label">Comment</label> -->
+                    <div class="col-md-12">
+                        <textarea id="comment-input" placeholder="Join the discussion" rows="3" class="form-control" ng-model="editing.comment"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions fluid margin-top-10">
+                    <div class="col-md-6">
+                        <span class="small"><span ng-bind="editing.comment.length">0</span>/2000 characters</span>
+                        <a class="pull-right" style="margin-top: 15px;" href="/help/community-standards" target="_blank">Community standards</a>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-primary pull-right margin-top-10" type="submit" style="margin-left: 10px;">Post</button>
+                        <!--<button class="btn btn-default pull-right margin-top-10" type="submit">Preview</button>-->
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="well well-sm" ng-if="!user">
+    <div class="text-center">You must be logged in to comment. <a href="/login">Log In</a></div>
+</div>
+
+<ul class="media-list">
+
+    <li class="media" ng-repeat="tier1_comment in comments['top']">
+        <a href="/profile/{{ tier1_comment.user.handle }}/" class="pull-left">
+            <img alt="64x64" ng-src="{{ tier1_comment.user.imageUrl || '/images/people_73x73.jpg' }}" class="img-rounded img-responsive media-object" style="width: 48px; height: 48px;">
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading">
+                <a href="/profile/{{ tier1_comment.user.handle }}/">
+                    <span ng-bind="tier1_comment.user.first_name"></span>
+                    <span ng-bind="tier1_comment.user.last_name"></span>
+                </a>&nbsp;
+                <time-ago time="tier1_comment.creation_date"></time-ago>
+                <small>
+                    <span ng-if="user && tier1_comment.user.rid != user['@rid']">
+                        &nbsp;&nbsp;<a href="javascript:void(0)" ng-click="vote(1, tier1_comment)" class="fa fa-caret-square-o-up text-success"></a>
+                        <a href="javascript:void(0)" ng-click="vote(-1, tier1_comment)" class="fa fa-caret-square-o-down text-danger"></a>
+                    </span>
+                    &nbsp;&nbsp;<a href="javascript:void(0)" ng-if="user" ng-click="reply(tier1_comment)">reply</a>
+                </small>
+            </h4>
+            <p id="comment_{{ tier1_comment.unique }}" ng-bind="tier1_comment.body"></p>
+            <div class="media" ng-repeat="tier2_comment in comments[tier1_comment['@rid']]">
+                <a href="/profile/{{ tier2_comment.user.handle }}/" class="pull-left">
+                    <img alt="64x64" ng-src="{{ tier2_comment.user.imageUrl || '/images/people_73x73.jpg' }}" class="img-rounded img-responsive media-object" style="width: 48px; height: 48px;">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <a href="/profile/{{ tier2_comment.user.handle }}/">
+                            <span ng-bind="tier2_comment.user.first_name"></span>
+                            <span ng-bind="tier2_comment.user.last_name"></span>
+                        </a>&nbsp;
+                        <time-ago time="tier2_comment.creation_date"></time-ago>
+                        <small>
+                            <span ng-if="user && tier2_comment.user.rid != user['@rid']">
+                                &nbsp;&nbsp;<a href="javascript:void(0)" ng-click="vote(1, tier2_comment)" class="fa fa-caret-square-o-up text-success"></a>
+                                <a href="javascript:void(0)" ng-click="vote(-1, tier2_comment)" class="fa fa-caret-square-o-down text-danger"></a>
+                            </span>
+                            &nbsp;&nbsp;<a href="javascript:void(0)" ng-if="user" ng-click="reply(tier2_comment)">reply</a>
+                        </small>
+                    </h4>
+                    <p id="comment_{{ tier2_comment.unique }}" ng-bind="tier2_comment.body"></p>
+                    <div class="media" ng-repeat="tier3_comment in comments[tier2_comment['@rid']]">
+                        <a href="/profile/{{ tier3_comment.user.handle }}/" class="pull-left">
+                            <img alt="64x64" ng-src="{{ tier3_comment.user.imageUrl || '/images/people_73x73.jpg' }}" class="img-rounded img-responsive media-object" style="width: 48px; height: 48px;">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                <a href="/profile/{{ tier3_comment.user.handle }}/">
+                                    <span ng-bind="tier3_comment.user.first_name"></span>
+                                    <span ng-bind="tier3_comment.user.last_name"></span>
+                                </a>&nbsp;
+                                <time-ago time="tier3_comment.creation_date"></time-ago>
+                                <small>
+                                    <span ng-if="user && tier3_comment.user.rid != user['@rid']">
+                                        &nbsp;&nbsp;<a href="javascript:void(0)" ng-click="vote(1, tier2_comment)" class="fa fa-caret-square-o-up text-success"></a>
+                                        <a href="javascript:void(0)" ng-click="vote(-1, tier2_comment)" class="fa fa-caret-square-o-down text-danger"></a>
+                                    </span>
+                                    &nbsp;&nbsp;<a href="javascript:void(0)" ng-if="user" ng-click="reply(tier3_comment)">reply</a>
+                                </small>
+                            </h4>
+                            <p id="comment_{{ tier3_comment.unique }}" ng-bind="tier3_comment.body"></p>
+                            <div class="media" ng-repeat="tier4_comment in comments[tier3_comment['@rid']]">
+                                <a href="/profile/{{ tier4_comment.user.handle }}/" class="pull-left">
+                                    <img alt="64x64" ng-src="{{ tier4_comment.user.imageUrl || '/images/people_73x73.jpg' }}" class="img-rounded img-responsive media-object" style="width: 48px; height: 48px;">
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">
+                                        <a href="/profile/{{ tier4_comment.user.handle }}/">
+                                            <span ng-bind="tier4_comment.user.first_name"></span>
+                                            <span ng-bind="tier4_comment.user.last_name"></span>
+                                        </a>&nbsp;
+                                        <time-ago time="tier4_comment.creation_date"></time-ago>
+                                        <small>
+                                            <span ng-if="user && tier4_comment.user.rid != user['@rid']">
+                                                &nbsp;&nbsp;<a href="javascript:void(0)" ng-click="vote(1, tier4_comment)" class="fa fa-caret-square-o-up text-success"></a>
+                                                <a href="javascript:void(0)" ng-click="vote(-1, tier4_comment)" class="fa fa-caret-square-o-down text-danger"></a>
+                                            </span>
+                                            &nbsp;&nbsp;<a href="javascript:void(0)" ng-if="user" ng-click="reply(tier4_comment)">reply</a>
+                                        </small>
+                                    </h4>
+                                    <p id="comment_{{ tier4_comment.unique }}" ng-bind="tier4_comment.body"></p>
+                                    <div class="media" ng-repeat="tier5_comment in comments[tier4_comment['@rid']]">
+                                        <a href="/profile/{{ tier5_comment.user.handle }}/" class="pull-left">
+                                            <img alt="64x64" ng-src="{{ tier5_comment.user.imageUrl || '/images/people_73x73.jpg' }}" class="img-rounded img-responsive media-object" style="width: 48px; height: 48px;">
+                                        </a>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">
+                                                <a href="/profile/{{ tier5_comment.user.handle }}/">
+                                                    <span ng-bind="tier5_comment.user.first_name"></span>
+                                                    <span ng-bind="tier5_comment.user.last_name"></span>
+                                                </a>&nbsp;
+                                                <time-ago time="tier5_comment.creation_date"></time-ago>
+                                                <small>
+                                                    <span ng-if="user && tier5_comment.user.rid != user['@rid']">
+                                                        &nbsp;&nbsp;<a href="javascript:void(0)" ng-click="vote(1, tier5_comment)" class="fa fa-caret-square-o-up text-success"></a>
+                                                        <a href="javascript:void(0)" ng-click="vote(-1, tier5_comment)" class="fa fa-caret-square-o-down text-danger"></a>
+                                                    </span>
+                                                </small>
+                                            </h4>
+                                            <p id="comment_{{ tier5_comment.unique }}" ng-bind="tier5_comment.body"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+
+</ul>
+

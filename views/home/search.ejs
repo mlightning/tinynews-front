@@ -1,0 +1,74 @@
+<% include ../common/header %>
+
+<section ng-controller="SearchResultsController">
+
+    <div class="row">
+        <div class="col-md-12">
+        <% if (data.query) { %>
+            <h3 class="page-title">
+                Search Results <small>for "<em><%= data.query %></em>"</small>
+            </h3>
+        <% } else { %>
+            <h3 class="page-title">
+                Search TinyNews.com
+            </h3>
+        <% } %>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/search">Search</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form ng-submit="do_search()">
+                <div class="input-group">
+                    <input type="text" name="query" class="form-control" ng-model="query" value="<%= data.query %>" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">&nbsp;&nbsp;Search&nbsp;&nbsp;</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <% if (data && data.search && data.search.hits && data.search.hits.hits ) { %>
+    <div class="row">
+        <div class="col-md-12">
+            <hr />
+        </div>
+        <div class="col-md-12">
+            <p class="text-muted"><%= data.search.hits.total %> results. (<%= data.search.took %> ms)</p>
+            <table class="table table-hover">
+
+            <% data.search.hits.hits.forEach(function(hit) { %>
+                <tr>
+                <% if (hit._type == 'Publisher') { %>
+                    <td><%= hit._type %></td>
+                    <td colspan="3"><a href="/publisher/<%= hit._source.slug %>"><%= hit._source.name %></a></td>
+                <% } else if (hit._type == 'Journalist') { %>
+                    <td><%= hit._type %></td>
+                    <td colspan="3"><a href="/journalist/<%= hit._source.slug %>"><%= hit._source.first_name %> <%= hit._source.last_name %></a></td>
+                <% } else if (hit._type == 'Article') { %>
+                    <td><%= hit._type %></td>
+                    <td><a href="/article/<%= hit._source.slug %>"><%= hit._source.title %></a></td>
+                    <td><a href="/publisher/<%= hit._source.publisher.slug %>"><%= hit._source.publisher.name %></a></td>
+                    <td><a href="/journalist/<%= hit._source.journalist.slug %>"><%= hit._source.journalist.first_name %> <%= hit._source.journalist.last_name %></a></td>
+                <% } %>
+                </tr>
+            <% }) %>
+            </table>
+        </div>
+    </div>
+    <% } %>
+
+</section>
+
+<% include ../common/footer %>
