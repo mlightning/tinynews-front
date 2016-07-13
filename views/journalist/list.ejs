@@ -1,0 +1,96 @@
+<% include ../common/header %>
+
+<section ng-controller = "JournalistController">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title">
+                Journalists
+            </h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/journalists">Journalists</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <nav class="navbar navbar-default" role="navigation">
+        <ul class="nav navbar-nav">
+            <li ng-class="{ 'active': tab == 'all' }"><a ng-href="/journalists/#/all/{{ view_mode }}/" ng-click="change_tab('all')">All Journalists</a></li>
+            <li ng-class="{ 'active': tab == 'top' }"><a ng-href="/journalists/#/top/{{ view_mode }}/" ng-click="change_tab('top')">Top Journalists</a></li>
+            <% if (token && token.user) { %>
+            <li ng-class="{ 'active': tab == 'mine' }"><a ng-href="/journalists/#/mine/{{ view_mode }}/" ng-click="change_tab('mine')">My Journalists</a></li>
+            <li ng-class="{ 'active': tab == 'recent' }"><a ng-href="/journalists/#/recent/{{ view_mode }}/" ng-click="change_tab('recent')">Recently Rated</a></li>
+            <li ng-class="{ 'active': tab == 'friends' }"><a ng-href="/journalists/#/friends/{{ view_mode }}/" ng-click="change_tab('friends')">Friend Ratings</a></li>
+            <% } %>
+        </ul>
+        <ul class="nav navbar-nav navbar-right navbar-form">
+            <li>
+                <div class="btn-group">
+                    <a ng-href="/journalists/#/{{ tab }}/grid/" class="btn btn-default" ng-class="{ 'active': view_mode == 'grid' }"><i class="fa fa-th"></i></a>
+                    <a ng-href="/journalists/#/{{ tab }}/list/" class="btn btn-default" ng-class="{ 'active': view_mode == 'list' }"><i class="fa fa-th-list"></i></a>
+                </div>
+                &nbsp;&nbsp;
+            </li>
+            <li>
+                <div class="btn-group">
+                    <button class="btn btn-default" ng-class="{ disabled: current_page == 0 }" ng-click="set_page(current_page - 1)"><i class="fa fa-chevron-left"></i></button>
+                    <button class="btn btn-default" ng-class="{ disabled: current_page == no_of_pages() - 1 }" ng-click="set_page(current_page + 1)" ><i class="fa fa-chevron-right"></i></button>
+                </div>
+                &nbsp;&nbsp;
+            </li>
+        </ul>
+    </nav>
+
+    <div>
+        <input type="text" class="form-control" ng-model="query" placeholder="Search" />
+        <br />
+
+        <script type="text/ng-template" id="nl_journalist_card.html">
+            <% include ../../public/js/views/nl_journalist_card.html %>
+        </script>
+        <script type="text/ng-template" id="nl_journalist_card_row.html">
+            <% include ../../public/js/views/nl_journalist_card_row.html %>
+        </script>
+        <script type="text/ng-template" id="nl_list_journalists_grid.html">
+            <% include ../../public/js/views/nl_list_journalists_grid.html %>
+        </script>
+        <script type="text/ng-template" id="nl_list_journalists_list.html">
+            <% include ../../public/js/views/nl_list_journalists_list.html %>
+        </script>
+
+        <nl-list-journalists mode="view_mode" items="displayed"></nl-list-journalists>
+
+        <!--<br />
+        <div class="text-center">
+
+            <span ng-repeat="i in pages track by $index">
+                <a ng-click="set_page($index)" ng-class="{ true: 'fa fa-circle ', false: 'fa fa-circle-o' }[$index == current_page]"></a>
+            </span>
+
+        </div>
+        <br />-->
+
+        <nav class="navbar navbar-default" role="navigation">
+            <ul class="nav navbar-nav navbar-right navbar-form">
+                <li>
+                    <div class="btn-group">
+                        <button class="btn btn-default" ng-class="{ disabled: current_page == 0 }" ng-click="set_page(current_page - 1)"><i class="fa fa-chevron-left"></i></button>
+                        <button class="btn btn-default" ng-class="{ disabled: current_page == no_of_pages() - 1 }" ng-click="set_page(current_page + 1)" ><i class="fa fa-chevron-right"></i></button>
+                    </div>
+                    &nbsp;&nbsp;
+                </li>
+            </ul>
+        </nav>
+        <br />
+    </div>
+
+</section>
+
+<% include ../common/footer %>

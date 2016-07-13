@@ -1,0 +1,289 @@
+<% include ../common/header %>
+
+<link href="/assets/admin/pages/css/profile.css" rel="stylesheet" type="text/css" />
+
+<section ng-controller="JournalistProfileController">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title">
+                <%- data.journalist.first_name %> <%- data.journalist.last_name %>
+                <% if (data.journalist.featured) { %>
+                    <small>Featured Journalist</small>
+                <% } else { %>
+                    <small>Journalist</small>
+                <% } %>
+            </h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/journalists">Journalists</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/journalist/<%- data.journalist.slug %>">
+                        <%- data.journalist.first_name %> <%- data.journalist.last_name %>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row profile">
+
+        <div class="col-md-3">
+            <ul class="list-unstyled profile-nav">
+                <li>
+                    <% if (data.journalist.imageUrl) { %>
+                    <img src="<%= data.journalist.imageUrl %>" ng-src="{{ journalist.imageUrl }}" alt="<%- data.journalist.first_name %> <%- data.journalist.last_name %>" height="252" width="252" class="img-rounded img-responsive">
+                    <% } else { %>
+                    <img src="/images/profile_default_journalist.png" ng-src="{{ '/images/profile_default_journalist.png' }}" alt="<%- data.journalist.first_name %> <%- data.journalist.last_name %>" height="252" width="252" class="img-rounded img-responsive">
+                    <% } %>
+
+                    <% if (token.user.permissions['journalist.edit']) { %>
+                    <a href="javascript: void(0);" class="profile-edit" nl-img-uploader category="journalist" current-img="{{journalist.imageUrl}}" callback="save_profile_image"> edit </a>
+                    <% } %>
+                </li>
+            </ul>
+
+            <nl-follow target="journalist" type="journalists"></nl-follow>
+
+            <ul class="ver-inline-menu tabbable margin-bottom-10">
+                <li ng-class="{ 'active': path == '/bio' || path == '/' || !path }" class="active">
+                    <a data-toggle="tab" href="#bio">
+                        <i class="fa fa-suitcase"></i> Bio
+                    </a>
+                    <span class="after"></span>
+                </li>
+                <li ng-class="{ 'active': path == '/publishers' }">
+                    <a data-toggle="tab" href="#publishers">
+                        <i class="fa fa-newspaper-o"></i>
+                        Publishers
+                        <span class="badge badge-roundless badge-success" ng-bind="meta.publishers.length || 0"></span>
+                    </a>
+                </li>
+                <li ng-class="{ 'active': path == '/articles' }">
+                    <a data-toggle="tab" href="#articles">
+                        <i class="fa fa-archive"></i>
+                        Articles
+                        <span class="badge badge-roundless badge-success" ng-bind="meta.articles.length || 0"></span>
+                    </a>
+                </li>
+                <li ng-class="{ 'active': path == '/comments' }">
+                    <a data-toggle="tab" href="#comments">
+                        <i class="fa fa-comments-o"></i>
+                        Comments
+                        <span class="badge badge-roundless badge-success" ng-bind="count || 0"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-md-9">
+
+            <div class="row">
+                <div class="col-md-8 profile-info">
+                    <h3>Summary</h3>
+                    <p><%= data.journalist.summary || 'No summary added.' %></p>
+                </div>
+                <div class="col-md-4">
+                    <div class="portlet sale-summary">
+                        <div class="portlet-title">
+                            <div class="caption"> Stats </div>
+                        </div>
+                        <div class="portlet-body">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <span class="sale-info">Publishers</span>
+                                    <span class="sale-num"><%= data.meta.publisher_count %></span>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-lg-5 col-md-5 col-sm-5">
+                                            <span class="sale-info">Avg Rating</span>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                              <span class="sale-num">
+                                                  <span><%= data.meta.avg_rating %></span>
+                                              </span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="sale-info">Followers</span>
+                                    <span class="sale-num"><%= data.meta.follower_count %></span>
+                                </li>
+                                <!--<li>
+                                    <span class="sale-info">Following</span>
+                                    <span class="sale-num"></span>
+                                </li>-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="tabbable tabbable-custom tabbable-custom-profile">
+                        <ul class="nav nav-tabs">
+                            <li ng-class="{ 'active': path == '/bio' || path == '/' || !path }">
+                                <a href="#bio" data-toggle="tab">Bio</a>
+                            </li>
+                            <li ng-class="{ 'active': path == '/publishers' }">
+                                <a href="#publishers" data-toggle="tab">
+                                    Publishers
+                                    <span class="badge badge-roundless badge-success" ng-bind="meta.publishers.length || 0"></span>
+                                </a>
+                            </li>
+                            <li ng-class="{ 'active': path == '/articles' }">
+                                <a href="#articles" data-toggle="tab">
+                                    Articles
+                                    <span class="badge badge-roundless badge-success" ng-bind="meta.articles.length || 0"></span>
+                                </a>
+                            </li>
+                            <li ng-class="{ 'active': path == '/comments' }">
+                                <a href="#comments" data-toggle="tab">
+                                    Comments
+                                    <span class="badge badge-roundless badge-success" ng-bind="count || 0"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+
+                            <div class="tab-pane" id="tab_bio" ng-class="{ 'active': path == '/bio' || path == '/' || !path }">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                            <section id="profile-about">
+                                                <h3>Specialized In</h3>
+                                                <p><%= data.journalist.interest || 'Unknown.' %></p>
+                                            </section>
+
+                                            <section id="profile-about">
+                                                <h3>Work Experience</h3>
+                                                <div>
+                                                    <ul>
+                                                        <li>
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    EDITOR
+                                                                </div>
+                                                                <div class="col-md-4 text-right">
+                                                                    2008-present
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    The Guardian
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </section>
+
+                                            <% if (data.journalist.email || data.journalist.website || data.journalist.twitter || data.journalist.facebook) { %>
+                                            <section id="profile-contact">
+                                                <h3><i class="typcn typcn-eye-open"></i>&nbsp;Contact</h3>
+                                                <div>
+                                                    <ul>
+                                                        <% if (data.journalist.email) { %>
+                                                        <li>
+                                                            <i class="typcn typcn-mail"></i>&nbsp;<a href="mailto:<%- data.journalist.email %>"><%- data.journalist.email %></a>
+                                                        </li>
+                                                        <% } %>
+                                                        <% if (data.journalist.website) { %>
+                                                        <li>
+                                                            <i class="typcn typcn-world-outline"></i>&nbsp;<a href="<%- data.journalist.website %>" target="_blank"><%- data.journalist.website %></a>
+                                                        </li>
+                                                        <% } %>
+                                                        <% if (data.journalist.twitter) { %>
+                                                        <li>
+                                                            <i class="typcn typcn-social-twitter"></i>&nbsp;<a href="http://www.twitter.com/<%- data.journalist.twitter %>" target="_blank">http://www.twitter.com/<%- data.journalist.twitter %></a>
+                                                        </li>
+                                                        <% } %>
+                                                        <% if (data.journalist.facebook) { %>
+                                                        <li>
+                                                            <i class="typcn typcn-social-facebook"></i>&nbsp;<a href="http://www.facebook.com/<%- data.journalist.facebook %>" target="_blank">http://www.facebook.com/<%- data.journalist.facebook %></a>
+                                                        </li>
+                                                        <% } %>
+                                                    </ul>
+                                                </div>
+                                            </section>
+                                            <% } %>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab_publishers" ng-class="{ 'active': path == '/publishers' }">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <table class="table table-condensed table-striped" style="margin-bottom: 0;">
+                                                <% data.meta.publishers.forEach(function(publisher) { %>
+                                                <tr>
+                                                    <td><a href="/publisher/<%= publisher.slug %>/"><%= publisher.name %></a></td>
+                                                </tr>
+                                                <% }) %>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab_articles" ng-class="{ 'active': path == '/articles' }">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <table class="table table-condensed table-striped" style="margin-bottom: 0;">
+                                                <% data.meta.articles.forEach(function(article) { %>
+                                                <tr>
+                                                    <td><a href="/article/<%= article.slug %>/"><%= article.title %></a></td>
+                                                </tr>
+                                                <% }) %>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab_comments" ng-class="{ 'active': path == '/comments' }">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                            <div id="accordion1" class="panel-group accordion">
+                                                <script type="text/ng-template" id="/public/js/views/comments.html">
+                                                    <% include ../../public/js/views/comments.html %>
+                                                </script>
+                                                <nl-comments target="journalist" count="count" type="journalist"></nl-comments>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<% include ../common/footer %>
