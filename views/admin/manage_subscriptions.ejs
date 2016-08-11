@@ -1,0 +1,93 @@
+<% include ../common/header %>
+
+<section ng-controller="FeedManagerController">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+            <h3 class="page-title">
+                Manage Feed Subscriptions <small>all publishers</small>
+            </h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/admin">Admin</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/admin/feeds/manage">Feeds</a>
+                </li>
+            </ul>
+            <!-- END PAGE TITLE & BREADCRUMB-->
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9">
+            <div class="btn-toolbar" role="toolbar" ng-cloak>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <input type="checkbox" />
+                        <span ng-if="selected">&nbsp;&nbsp;<strong ng-bind="selected"></strong> selected.</span>&nbsp;
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript: void(0);" ng-click="toggle_select(true)">Select All</a></li>
+                        <li><a href="javascript: void(0);" ng-click="toggle_select(false)">Deselect All</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group" ng-if="selected">
+                    <button type="button" class="btn btn-default" ng-if="selected && selected == 1" ng-disabled="!selected || selected > 1" ng-click="edit_subscription()">Edit</button>
+                    <button type="button" class="btn btn-danger" ng-disabled="!selected" ng-click="delete_subscriptions()">Delete</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 text-right">
+            <div class="btn-toolbar" role="toolbar">
+                <button type="button" class="btn btn-primary" ng-click="show_new_modal()">Create Subscription</button>
+            </div>
+        </div>
+    </div>
+
+    &nbsp;
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped table-hover" ng-cloak>
+                <tr>
+                    <th style="width: 25px;"><!-- Selection --></th>
+                    <th>Publisher</th>
+                    <th>Feed</th>
+                    <th>URL</th>
+                </tr>
+                <tr ng-if="subscriptions && subscriptions.length" ng-repeat="sub in subscriptions" ng-class="{ 'warning': sub.selected }">
+                    <td><input type="checkbox" ng-click="select(sub)" ng-checked="sub.selected" /></td>
+                    <td>Unknown</td>
+                    <td><span ng-bind="sub.title"></span></td>
+                    <td><a href="{{sub.url}}" ng-bind="sub.url" target="_blank"></a></td>
+                </tr>
+                <tr ng-if="!subscriptions.length">
+                    <td colspan="4">
+                        <br />&nbsp;
+                        <div>
+                            <h3 class="text-center">No Feed Subscriptions</h3>
+                        </div>
+                        <br />&nbsp;
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <% include modal_add_subscription %>
+    <nl-publisher-picker ng-model="editing.publisher" callback="save_subscription(publisher)"></nl-publisher-picker>
+    <nl-publisher-creator ng-model="wip.publisher" callback="created_publisher(publisher)"></nl-publisher-creator>
+
+</section>
+
+<% include ../common/footer %>

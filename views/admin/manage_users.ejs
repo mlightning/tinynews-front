@@ -1,0 +1,65 @@
+<% include ../common/header %>
+
+<section ng-controller = "UserManagerController">
+
+    <nav class="navbar navbar-default" role="navigation">
+        <ul class="nav navbar-nav">
+            <li class="active" ng-class="{'active': tabs.all.active }"><a href="#" ng-click="change_tab('all')">All Users</a></li>
+            <li ng-class="{'active': tabs.active.active }"><a href="#" ng-click="change_tab('active')">Active</a></li>
+            <li ng-class="{'active': tabs.validating.active }"><a href="#" ng-click="change_tab('validating')">Validating</a></li>
+            <li ng-class="{'active': tabs.locked.active }"><a href="#" ng-click="change_tab('locked')">Locked</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right navbar-form">
+            <li>
+                <div class="btn-group">
+                    <button class="btn btn-default" ng-class="{ 'active': current_view_type == 'grid_view' }" ng-click="set_grid_view()"><i class="fa fa-th"></i></button>
+                    <button class="btn btn-default" ng-class="{ 'active': current_view_type == 'list_view' }" ng-click="set_list_view()"><i class="fa fa-th-list"></i></button>
+                </div>
+                &nbsp;&nbsp;
+            </li>
+            <li>
+                <div class="btn-group">
+                    <button class="btn btn-default" ng-disabled="!current_page" ng-click="prev_page()"><i class="fa fa-chevron-left"></i></button>
+                    <button class="btn btn-default" ng-disabled="!(current_page < no_of_pages() - 1)" ng-click="next_page()" ><i class="fa fa-chevron-right"></i></button>
+                </div>
+                &nbsp;&nbsp;
+            </li>
+        </ul>
+    </nav>
+
+    <div>
+        <input type="text" class="form-control" ng-model="query_input" placeholder="Search">
+
+        <br/>
+
+        <nl-list-users></nl-list-users>
+
+        <br />
+
+        <div class="text-center">
+
+            <span ng-repeat="i in pages track by $index">
+                <a ng-click="set_page($index)" class="fa" ng-class="{'fa-circle': $index == current_page, 'fa-circle-o': $index != current_page }"></a>
+            </span>
+
+        </div>
+
+        <br />
+
+        <nav class="navbar navbar-default" role="navigation">
+            <ul class="nav navbar-nav navbar-right navbar-form">
+                <li>
+                    <div class="btn-group">
+                        <button class="btn btn-default" ng-disabled="!current_page" ng-click="prev_page()"><i class="fa fa-chevron-left"></i></button>
+                        <button class="btn btn-default" ng-disabled="!(current_page < no_of_pages() - 1)" ng-click="next_page()" ><i class="fa fa-chevron-right"></i></button>
+                    </div>
+                    &nbsp;&nbsp;
+                </li>
+            </ul>
+        </nav>
+        <br />
+    </div>
+
+</section>
+
+<% include ../common/footer %>
