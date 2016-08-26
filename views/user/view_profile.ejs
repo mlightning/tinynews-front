@@ -1,0 +1,189 @@
+<% include ../common/header %>
+
+<link href="/assets/admin/pages/css/profile.css" rel="stylesheet" type="text/css" />
+
+<section ng-controller="UserProfileController">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title">
+                <% if (data.user.handle != token.user.handle) { %><a href="/profile/<%- data.user.handle %>"><% } %>
+                <span <% if (data.user.handle == token.user.handle) { %> contenteditable ng-model="editing.first_name"<% } %>><%- data.user.first_name %></span>
+                <span <% if (data.user.handle == token.user.handle) { %> contenteditable ng-model="editing.last_name"<% } %>><%- data.user.last_name %></span>
+                <% if (data.user.handle != token.user.handle) { %></a><% } %>
+                <small><%= data.user.handle %></small>
+            </h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>User</span>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/profile/<%- data.user.handle %>">
+                        <%- data.user.first_name %> <%- data.user.last_name %>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row profile">
+        <div class="col-md-3">
+            <ul class="list-unstyled profile-nav">
+                <li>
+                    <img src="<%= data.user.imageUrl %>" ng-src="{{ editing.imageUrl }}" class="img-responsive" alt="">
+                    <% if (data.user.handle == token.user.handle) { %>
+                        <a href="javascript: void(0);" class="profile-edit" nl-img-uploader category="user" current-img="<%= data.user.imageUrl %>" callback="save_profile_image"> edit </a>
+                    <% } %>
+                    <br />
+                    <i class="typcn typcn-location"></i>&nbsp;
+                    <% if (data.profile.city && data.profile.country) { %>
+                    <span><%- data.profile.city %>, <%- data.profile.country %></span>
+                    <% } else if (data.profile.city && !data.profile.country) { %>
+                    <span><%- data.profile.city %></span>
+                    <% } else if (!data.profile.city && data.profile.country) { %>
+                    <span><%- data.profile.country %></span>
+                    <% } else { %>
+                    <span>Unknown Location</span>
+                    <% } %>
+                    <br />&nbsp;
+                </li>
+                <li>
+                    <a href="#"> Friends </a>
+                </li>
+                <% if (data.user.handle == token.user.handle) { %>
+                <li>
+                    <a href="/profile/settings/#/"> Account Settings </a>
+                </li>
+                <li>
+                    <a href="/profile/settings/#/password"> Change Password </a>
+                </li>
+                <li>
+                    <a href="/profile/feed"> Feed Settings </a>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-8 profile-info">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+                        tincidunt laoreet dolore magna aliquam tincidunt erat volutpat laoreet dolore magna
+                        aliquam tincidunt erat volutpat.
+                    </p>
+                    <p>
+                        <% if (data.profile.website_url || data.user.handle == token.user.handle) { %>
+                            <div>
+                                <i class="fa fa-link"></i>&nbsp;
+                                <a href="<%- data.profile.website_url %>"<% if (data.user.handle == token.user.handle) { %> contenteditable ng-model="editing.website_url"<% } %>>
+                                    <%- data.profile.website_url %>
+                                </a>
+                            </div>
+                        <% } %>
+                    </p>
+                    <p>
+                        <% if (data.profile.background && data.profile.background.length) { %>
+                            <ul>
+                                <% for (var i in data.profile.background) { %>
+                                <li>
+                                    <div><strong><%- data.profile.background[i].organization %></strong></div>
+                                    <div><%- data.profile.background[i].description %></div>
+                                    <div><%- data.profile.background[i].year_start %>-<%- data.profile.background[i].year_end %></div>
+                                </li>
+                                <% } %>
+                            </ul>
+                        <% } else { %>
+                            <div>No Background Information</div>
+                        <% } %>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <div class="portlet sale-summary">
+                        <div class="portlet-title">
+                            <div class="caption"> Ratings </div>
+                            <!--<div class="tools">
+                                <a class="reload" href="javascript:;"></a>
+                            </div>-->
+                        </div>
+                        <div class="portlet-body">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <span class="sale-info">Article Rated</span>
+                                    <span class="sale-num"><%- data.user.rated_article_count || 0 %></span>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-lg-5 col-md-5 col-sm-5">
+                                            <span class="sale-info">Avg Rating</span>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                          <span class="sale-num">
+                                              <span><%= data.user.avg_rating %></span>
+                                              <!--<span class="glyphicon glyphicon-star"></span>
+                                              <span class="glyphicon glyphicon-star"></span>
+                                              <span class="glyphicon glyphicon-star"></span>
+                                              <span class="glyphicon glyphicon-star"></span>
+                                              <span class="glyphicon glyphicon-star"></span>-->
+                                          </span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="sale-info">Followers</span>
+                                    <span class="sale-num"><%- data.user.follower_count || 0 %></span>
+                                </li>
+                                <li>
+                                    <span class="sale-info">Following</span>
+                                    <span class="sale-num"><%- data.user.followed_count || 0 %></span>
+                                </li>
+                                <li>
+                                    <span class="sale-info">Groups</span>
+                                    <span class="sale-num"><%- data.user.group_count || 0 %></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="tabbable tabbable-custom tabbable-custom-profile">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#tab_1_11" data-toggle="tab">Recently Rated Articles</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="tab_1_11">
+                            <div class="portlet-body">
+                                <div class="row featured">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                        <table class="table table-condensed table-striped" style="margin-bottom: 0;">
+                                            <% data.user.recently_rated_articles.forEach(function(article) { %>
+                                                <tr>
+                                                    <td><a href="/article/<%= article.slug %>"><%= article.title %></a></td>
+                                                    <td><%= article.rate_date %></td>
+                                                    <td><%= article.rating %></td>
+                                                </tr>
+                                            <% }) %>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<% include ../common/footer %>
