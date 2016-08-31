@@ -1,0 +1,317 @@
+<% include ../common/header %>
+
+<section ng-controller="UserFeedSettingsController">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title">
+                Feed Settings <small>Customize what content shows up in your stream.</small>
+            </h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/profile">Profile</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/profile/feed">Feed Settings</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="tabbable tabbable-custom tabbable-full-width">
+                <ul class="nav nav-tabs">
+                    <li class="text-center active" ng-style="{ 'active': tabs.ratings.active }">
+                        <a href="#options-ratings" data-toggle="tab" style="padding-top: 0;" ng-click="change_tab('ratings')">
+                            <br />
+                            <i class="fa fa-star-half-o fa-2x"></i><br />
+                            Ratings
+                        </a>
+                    </li>
+                    <li class="text-center" ng-style="{ 'active': tabs.tags.active }">
+                        <a href="#options-tags" data-toggle="tab" style="padding-top: 0;" ng-click="change_tab('tags')">
+                            <br />
+                            <i class="fa fa-tags fa-2x"></i><br />
+                            Tags
+                        </a>
+                    </li>
+                    <li class="text-center" ng-style="{ 'active': tabs.journalists.active }">
+                        <a href="#options-authors" data-toggle="tab" style="padding-top: 0;" ng-click="change_tab('journalists')">
+                            <br />
+                            <i class="fa fa-user fa-2x"></i><br />
+                            Journalists
+                        </a>
+                    </li>
+                    <li class="text-center" ng-style="{ 'active': tabs.publishers.active }">
+                        <a href="#options-publications" data-toggle="tab" style="padding-top: 0;" ng-click="change_tab('publishers')">
+                            <br />
+                            <i class="fa fa-book fa-2x"></i><br />
+                            Publications
+                        </a>
+                    </li>
+                    <li class="text-center" ng-style="{ 'active': tabs.friends.active }">
+                        <a href="#options-friends" data-toggle="tab" style="padding-top: 0;" ng-click="change_tab('friends')">
+                            <br />
+                            <i class="fa fa-smile-o fa-2x"></i><br />
+                            Friends
+                        </a>
+                    </li>
+                    <li class="text-center" ng-style="{ 'active': tabs.groups.active }">
+                        <a href="#options-groups" data-toggle="tab" style="padding-top: 0;" ng-click="change_tab('groups')">
+                            <br />
+                            <i class="fa fa-users fa-2x"></i><br />
+                            Groups
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="options-ratings" ng-style="{ 'active': tabs.ratings.active }">
+                        <br />
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Only show me articles with a quality rating of:</h5>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <select class="form-control" ng-model="settings.avg_article_rating" ng-change="set_rating()" ng-options="rating for rating in rating_options">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <br />
+                                        <input type="checkbox" id="chk_UsePublicRatings" name="use_public_ratings" value="true" ng-checked="settings.track_public_ratings" ng-click="toggle_public_ratings()" />
+                                        <label for="chk_UsePublicRatings">Do not use public ratings.</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-primary">Reset</button>
+                                    </div>
+                                </div>
+                            </div>-->
+                        </div>
+
+                        <br />
+                    </div>
+                    <div class="tab-pane" id="options-tags" ng-style="{ 'active': tabs.tags.active }">
+                        <br />
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Customize your feed by adding your favorite tags/keywords:</h5>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input class="form-control input-lg" type="text" ng-model="tag_search" ng-change="search_tags()" placeholder="Example: politics, business, sports" />
+                                        <br />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div>
+                                            <h5>Add Tags:</h5>
+                                            <span ng-repeat="tag in tags | limitTo: 20"><a class="btn btn-primary btn-sm" href="javascript: void(0);" ng-click="add_item('tags', tag)"><span ng-bind="tag.name"></span></a>&nbsp;</span>
+                                        </div>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-12" style="padding-bottom: 15px;">
+                                        <h5>Tags added by you:</h5>
+                                        <nl-tag-tag class="label label-default tag-label" ng-repeat="tag in settings.tags">
+                                            &nbsp;<span ng-bind="tag.name"></span>
+                                            <strong><a href="" class="fa fa-times" ng-click="del_item('tags', tag)"></a></strong>
+                                        </nl-tag-tag>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <br />
+                    </div>
+                    <div class="tab-pane" id="options-authors" ng-style="{ 'active': tabs.journalists.active }">
+                        <br />
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Customize your feed by adding your favorite journalists:</h5>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input class="form-control input-lg" type="text" ng-model="journalist_search" ng-change="search_journalists()" placeholder="Example: politics, business, sports" />
+                                        <br />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div>
+                                            <h5>Add Journalists:</h5>
+                                            <span ng-repeat="journalist in journalists | limitTo: 20"><a class="btn btn-primary btn-sm" href="javascript: void(0);" ng-click="add_item('journalists', journalist)"><span ng-bind="journalist.first_name"></span>&nbsp;<span ng-bind="journalist.last_name"></span></a>&nbsp;</span>
+                                        </div>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-12" style="padding-bottom: 15px;">
+                                        <h5>Journalists added by you:</h5>
+                                        <nl-tag-tag class="label label-default tag-label" ng-repeat="journalist in settings.journalists">
+                                            &nbsp;<span ng-bind="journalist.first_name"></span>&nbsp;<span ng-bind="journalist.last_name"></span>
+                                            <strong><a href="" class="fa fa-times" ng-click="del_item('journalists', journalist)"></a></strong>
+                                        </nl-tag-tag>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <br />
+                    </div>
+                    <div class="tab-pane" id="options-publications" ng-style="{ 'active': tabs.publishers.active }">
+                        <br />
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Customize your feed by adding your favorite publishers:</h5>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input class="form-control input-lg" type="text" ng-model="pub_search" ng-change="search_publishers()" placeholder="Example: politics, business, sports" />
+                                        <br />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div>
+                                            <h5>Add Publishers:</h5>
+                                            <span ng-repeat="publisher in publishers | limitTo: 20"><a class="btn btn-primary btn-sm" href="javascript: void(0);" ng-click="add_item('publishers', publisher)"><span ng-bind="publisher.name"></span></a>&nbsp;</span>
+                                        </div>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-12" style="padding-bottom: 15px;">
+                                        <h5>Publishers added by you:</h5>
+                                        <nl-tag-tag class="label label-default tag-label" ng-repeat="publisher in settings.publishers">
+                                            &nbsp;<span ng-bind="publisher.name"></span>
+                                            <strong><a href="" class="fa fa-times" ng-click="del_item('publishers', publisher)"></a></strong>
+                                        </nl-tag-tag>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <br />
+                    </div>
+                    <div class="tab-pane" id="options-friends" ng-style="{ 'active': tabs.friends.active }">
+                        <br />
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Customize your feed by adding your favorite friends:</h5>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input class="form-control input-lg" type="text" ng-model="friend_search" placeholder="Example: politics, business, sports" />
+                                        <br />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div>
+                                            <h5>Add Friends:</h5>
+                                            <span ng-repeat="friend in friends | filter: friend_search | limitTo: 20"><a class="btn btn-primary btn-sm" href="javascript: void(0);" ng-click="add_item('friends', friend)"><span ng-bind="friend.first_name"></span>&nbsp;<span ng-bind="friend.last_name"></span></a>&nbsp;</span>
+                                        </div>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-12" style="padding-bottom: 15px;">
+                                        <h5>Friends added by you:</h5>
+                                        <nl-tag-tag class="label label-default tag-label" ng-repeat="friend in settings.friends">
+                                            &nbsp;<span ng-bind="friend.first_name"></span>&nbsp;<span ng-bind="friend.last_name"></span>
+                                            <strong><a href="" class="fa fa-times" ng-click="del_item('friends', friend)"></a></strong>
+                                        </nl-tag-tag>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <br />
+                    </div>
+                    <div class="tab-pane" id="options-groups" ng-style="{ 'active': tabs.groups.active }">
+                        <br />
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Customize your feed by adding your favorite groups:</h5>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input class="form-control input-lg" type="text" ng-model="group_search" placeholder="Example: politics, business, sports" />
+                                        <br />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div>
+                                            <h5>Add Groups:</h5>
+                                            <span ng-repeat="group in groups | filter: group_search | limitTo: 20"><a class="btn btn-primary btn-sm" href="javascript: void(0);" ng-click="add_item('groups', group)"><span ng-bind="group.name"></span></a>&nbsp;</span>
+                                        </div>
+                                    </div>
+                                    <br />
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-12" style="padding-bottom: 15px;">
+                                        <h5>Groups added by you:</h5>
+                                        <nl-tag-tag class="label label-default tag-label" ng-repeat="group in settings.groups">
+                                            &nbsp;<span ng-bind="group.name"></span>
+                                            <strong><a href="" class="fa fa-times" ng-click="del_item('groups', group)"></a></strong>
+                                        </nl-tag-tag>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <br />
+                    </div>
+                </div>
+            </div>
+
+            <!--<div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+
+        </div>
+    </div>
+</section>
+
+<% include ../common/footer %>
