@@ -1,0 +1,150 @@
+<% include ../common/header %>
+
+<link href="/assets/admin/pages/css/profile.css" rel="stylesheet" type="text/css" />
+
+<section ng-controller="AccountSettingsController">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title">
+                Account Settings
+                <small>Manage your account</small>
+            </h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Account Settings</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row profile-account">
+
+        <div class="col-md-3">
+            <ul class="ver-inline-menu tabbable margin-bottom-10">
+                <li ng-class="{ 'active': path == '/personal' || path == '/' }">
+                    <a data-toggle="tab" href="#personal">
+                        <i class="fa fa-cog"></i> Personal Info
+                    </a>
+                    <span class="after"></span>
+                </li>
+                <li ng-class="{ 'active': path == '/background' }">
+                    <a data-toggle="tab" href="#background">
+                        <i class="fa fa-clock-o"></i> Background Info
+                    </a>
+                </li>
+                <li ng-class="{ 'active': path == '/password' }">
+                    <a data-toggle="tab" href="#password">
+                        <i class="fa fa-lock"></i> Change Password
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-md-9">
+            <div class="tab-content">
+                <div id="tab_personal" class="tab-pane" ng-class="{ 'active': path == '/personal' || path == '/' }">
+                    <form name="info" role="form" onsubmit="return false;" ng-submit="save_info()" novalidate>
+                        <div class="form-group" ng-class="{ 'has-success': info.first_name.$valid && info.first_name.$dirty, 'has-error': info.first_name.$invalid && info.first_name.$dirty }">
+                            <label class="control-label">First Name</label>
+                            <input type="text" name="first_name" placeholder="John" class="form-control" ng-minlength="2" maxlength="32" ng-model="editing.first_name" required />
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-success': info.last_name.$valid && info.last_name.$dirty, 'has-error': info.last_name.$invalid && info.last_name.$dirty }">
+                            <label class="control-label">Last Name</label>
+                            <input type="text" name="last_name" placeholder="Doe" class="form-control" ng-minlength="2" maxlength="32" ng-model="editing.last_name" required />
+                        </div>
+                        <!--<div class="form-group" ng-class="{ 'has-success': info.phone_mobile.$valid && info.phone_mobile.$dirty, 'has-error': info.phone_mobile.$invalid && info.phone_mobile.$dirty }">
+                            <label class="control-label">Mobile Number</label>
+                            <input type="text" name="phone_mobile" placeholder="646 580 6284" class="form-control" ng-minlength="10" maxlength="16" ng-model="phone_mobile" />
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-success': info.about.$valid && info.about.$dirty, 'has-error': info.about.$invalid && info.about.$dirty }">
+                            <label class="control-label">About</label>
+                            <textarea name="about" class="form-control" rows="3" placeholder="I love journalism!" maxlength="256" ng-model="about"></textarea>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-success': info.website_url.$valid && info.website_url.$dirty, 'has-error': info.website_url.$invalid && info.website_url.$dirty }">
+                            <label class="control-label">Website Url</label>
+                            <input name="website_url" type="url" placeholder="http://www.mywebsite.com" class="form-control" ng-minlength="10" maxlength="128" ng-model="website_url" />
+                        </div>-->
+                        <div class="margiv-top-10">
+                            <button type="submit" class="btn green" ng-disabled="info.$invalid || !info.$dirty"> Save Changes </button>
+                        </div>
+                    </form>
+                </div>
+                <div id="tab_password" class="tab-pane" ng-class="{ 'active': path == '/password' }">
+                    <form name="pwdch" role="form" onsubmit="return false;" ng-submit="change_password()" novalidate>
+                        <div class="form-group" ng-class="{ 'has-success': pwdch.password.$valid && pwdch.password.$dirty, 'has-error': pwdch.password.$invalid && pwdch.password.$dirty }">
+                            <label class="control-label">New Password</label>
+                            <input type="password" name="password" class="form-control" ng-model="editing.password" ng-minlength="8" max-length="32" required />
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-success': pwdch.password2.$valid && pwdch.password2.$dirty, 'has-error': (pwdch.password2.$invalid && pwdch.password2.$dirty) || (editing.password != editing.password2 && pwdch.password2.$dirty)  }">
+                            <label class="control-label">Re-type New Password</label>
+                            <input type="password" name="password2" class="form-control" ng-model="editing.password2" ng-minlength="8" max-length="32" required />
+                        </div>
+                        <div class="margin-top-10">
+                            <button type="submit" class="btn green" ng-disabled="pwdch.$invalid || !pwdch.$dirty || editing.password != editing.password2"> Change Password </button>
+                        </div>
+                    </form>
+                </div>
+                <div id="tab_background" class="tab-pane" ng-class="{ 'active': path == '/background' }">
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h4>Background Entries</h4>
+                            <ul class="list-unstyled">
+                                <li ng-if="backgrounds.length" ng-repeat="bg in backgrounds" class="note note-info">
+                                    <div><strong ng-bind="bg.title"></strong></div>
+                                    <div ng-bind="bg.organization"></div>
+                                    <div ng-bind="bg.description"></div>
+                                    <div>
+                                        <span class="muted"><span ng-bind="bg.year_start"></span> - <span ng-bind="bg.year_end"></span></span>
+                                    </div>
+                                    <a href="javascript: void(0);" class="fa fa-times fa-lg" ng-click="remove_background(bg)"></a>
+                                </li>
+                                <li ng-if="!backgrounds.length">
+                                    No Background Entries Yet
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-7">
+                            <h4>Add New Entry</h4>
+                            <form name="newbg" role="form" onsubmit="return false;" ng-submit="add_background()" novalidate>
+                                <div class="form-group" ng-class="{ 'has-success': newbg.title.$valid && newbg.title.$dirty, 'has-error': newbg.title.$invalid && newbg.title.$dirty }">
+                                    <label class="control-label">Position Title</label>
+                                    <input type="text" name="title" class="form-control" ng-model="newbg_entry.title" ng-minlength="2" max-length="32" required />
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-success': newbg.org.$valid && newbg.org.$dirty, 'has-error': newbg.org.$invalid && newbg.org.$dirty }">
+                                    <label class="control-label">Organization</label>
+                                    <input type="text" name="org" class="form-control" ng-model="newbg_entry.organization" ng-minlength="2" max-length="32" required />
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-success': newbg.desc.$valid && newbg.desc.$dirty, 'has-error': newbg.desc.$invalid && newbg.desc.$dirty }">
+                                    <label class="control-label">Description</label>
+                                    <input type="text" name="desc" class="form-control" ng-model="newbg_entry.description" ng-minlength="2" max-length="32" required />
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-success': newbg.start.$valid && newbg.start.$dirty, 'has-error': newbg.start.$invalid && newbg.start.$dirty }">
+                                    <label class="control-label">Start Year</label>
+                                    <input type="number" name="start" class="form-control" ng-model="newbg_entry.year_start" min="1920" max="2014" required />
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-success': newbg.end.$valid && newbg.end.$dirty, 'has-error': newbg.end.$invalid && newbg.end.$dirty }">
+                                    <label class="control-label">Start Year</label>
+                                    <input type="number" name="end" class="form-control" ng-model="newbg_entry.year_end" min="1920" max="2014" required />
+                                </div>
+                                <div class="margin-top-10">
+                                    <button type="submit" class="btn green" ng-disabled="newbg.$invalid || !newbg.$dirty"> Add Background Entry </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<% include ../common/footer %>
