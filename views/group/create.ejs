@@ -1,0 +1,141 @@
+<% include ../common/header %>
+
+<link href="/assets/admin/pages/css/login.css" rel="stylesheet" type="text/css" />
+<link href="/assets/admin/pages/css/profile.css" rel="stylesheet" type="text/css" />
+
+<div class="content " ng-controller="CreateGroupController">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title">
+                Create Group
+            </h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/groups">Groups</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Create group</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN FORM-->
+            <div class="form">
+                <form name="group" role="form" action="#" class="form-horizontal" novalidate="novalidate">
+                <div class="form-body">
+                    <h3 class="form-title">Basic Information</h3>
+                    <!--
+                    <div class="form-group">
+                        <label class="col-sm-4 col-md-3 control-label">Group Type</label>
+                        <div class="col-sm-8 col-md-9">
+                            <div class="radio-list">
+                                <label class="radio-inline">
+                                    <input type="radio" name="groupType" id="groupTypePrivate" value="1"  ng-model="data.type" checked>Private</label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="groupType" id="groupTypePublic" value="2" ng-model="data.type" >Public</label>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                    <div class="form-group" ng-class="{ 'has-success': group.name.$valid && group.name.$dirty, 'has-error': group.name.$invalid && group.name.$dirty }">
+                        <label class="col-sm-4 col-md-3 control-label" for="name">Name</label>
+                        <div class="col-sm-8 col-md-9">
+                            <input type="text" class="form-control" placeholder="Enter the name." id="name" name="name" ng-minlength="5" maxlength="80" ng-model="data.name" required >
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label class="col-sm-4 col-md-3 control-label" for="picturefile">Picture</label>
+                        <div class="col-sm-4 col-md-3">
+                            <div class="profile">
+                                <ul class="list-unstyled profile-nav">
+                                    <li>
+                                        <img ng-src="{{ data.imageUrl }}" class="img rounded img-responsive">
+                                        <a href="javascript: void(0);" class="profile-edit" nl-img-uploader category="publisher" current-img="{{ data.imageUrl}}" callback="save_profile_image"> edit </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="form-title">About</h3>
+                    <div class="form-group" ng-class="{ 'has-success': group.description.$valid && group.description.$dirty, 'has-error': group.description.$invalid && group.description.$dirty }">
+                        <label class="col-sm-4 col-md-3 control-label" for="description">Summary</label>
+                        <div class="col-sm-8 col-md-9">
+                            <textarea class="form-control" rows="3" placeholder="Maximum 200 characters" id="description" name="description" ng-minlength="5" maxlength="200" ng-model="data.description" required style="resize: none;"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-success': group.standards.$valid && group.standards.$dirty, 'has-error': group.standards.$invalid && group.standards.$dirty }">
+                        <label class="col-sm-4 col-md-3 control-label" for="standards">Standards<br class="hidden-xs"/> for entry</label>
+                        <div class="col-sm-8 col-md-9">
+                            <textarea class="form-control" rows="3" placeholder="Maximum 200 characters" id="standards" name="standards" ng-minlength="5" maxlength="200" ng-model="data.standards" required style="resize: none;"></textarea>
+                        </div>
+                    </div>
+                    <h3 class="form-title">Contact Information</h3>
+                    <div class="form-group" ng-class="{ 'has-success': group.email.$valid && group.email.$dirty, 'has-error': group.email.$invalid && group.email.$dirty }">
+                        <label class="col-sm-4 col-md-3 control-label" for="email">Email Address</label>
+                        <div class="col-sm-8 col-md-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-envelope"></i>
+                                </span>
+                                <input type="email" class="form-control" placeholder="Email Address" id="email" name="email" ng-minlength="5" maxlength="150" ng-model="data.contact_email" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-success': group.contact_url.$valid && group.contact_url.$dirty && data.contact_url != '', 'has-error': group.contact_url.$invalid && group.contact_url.$dirty }">
+                        <label class="col-sm-4 col-md-3 control-label" for="website">Website</label>
+                        <div class="col-sm-8 col-md-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-globe"></i>
+                                </span>
+                                <input type="url" class="form-control" placeholder="Website" id="contact_url" name="contact_url" ng-minlength="5" maxlength="256" ng-model="data.contact_url">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-success': group.twitter.$valid && group.twitter.$dirty && data.twitter != '', 'has-error': group.twitter.$invalid && group.twitter.$dirty }">
+                        <label class="col-sm-4 col-md-3 control-label" for="twitter">Twitter</label>
+                        <div class="col-sm-8 col-md-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-twitter"></i>
+                                </span>
+                                <input type="text" class="form-control" placeholder="Full url or your username" id="twitter" name="twitter" ng-minlength="5" maxlength="50" ng-model="data.contact_twitter">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-success': group.facebook.$valid && group.facebook.$dirty && data.facebook != '', 'has-error': group.facebook.$invalid && group.facebook.$dirty  }">
+                        <label class="col-sm-4 col-md-3 control-label" for="facebook">Facebook</label>
+                        <div class="col-sm-8 col-md-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-facebook"></i>
+                                </span>
+                                <input type="text" class="form-control" placeholder="Full url or page name" id="facebook" name="facebook" ng-minlength="5" maxlength="80" ng-model="data.contact_fb">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions fluid">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="button" class="btn blue" ng-click = "submit()" ng-disabled="group.$invalid">Create</button>
+                        <button type="button" class="btn default">Cancel</button>
+                    </div>
+                </div>
+            </form>
+            <!-- END FORM-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include ../common/footer %>
