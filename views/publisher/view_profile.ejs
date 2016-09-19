@@ -1,0 +1,269 @@
+<% include ../common/header %>
+
+<link href="/assets/admin/pages/css/profile.css" rel="stylesheet" type="text/css" />
+
+<section ng-controller="PublisherProfileController">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title">
+                <%- data.publisher.name %>
+                <small>Publisher profile</small>
+            </h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/publisher">Publishers</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span><%- data.publisher.name %></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row profile">
+        <div class="col-md-3">
+            <ul class="list-unstyled profile-nav">
+                <li>
+                    <% if (data.publisher.imageUrl) { %>
+                    <img src="<%= data.publisher.imageUrl %>" ng-src="{{ publisher.imageUrl }}" alt="<%- data.publisher.name %>" class="img rounded img-responsive" />
+                    <% } else { %>
+                    <img src="/images/profile_default_publisher.png" ng-src="{{ '/images/profile_default_publisher.png' }}" alt="<%- data.publisher.name %>" height="252" width="252" class="img-rounded img-responsive" />
+                    <% } %>
+
+                    <% if (token.user.permissions['publisher.edit']) { %>
+                    <a href="javascript: void(0);" class="profile-edit" nl-img-uploader category="publisher" current-img="{{ publisher.imageUrl}}" callback="save_profile_image"> edit </a>
+                    <% } %>
+                </li>
+            </ul>
+
+            <nl-follow target="publisher" type="publishers"></nl-follow>
+
+            <ul class="ver-inline-menu tabbable margin-bottom-10">
+                <li ng-class="{ 'active': path == '/facts'  || path == '/' || !path }">
+                    <a data-toggle="tab" href="#facts">
+                        <i class="fa fa-cog"></i> Facts
+                    </a>
+                    <span class="after"></span>
+                </li>
+                <li ng-class="{ 'active': path == '/articles' }">
+                    <a data-toggle="tab" href="#articles">
+                        <i class="fa fa-clock-o"></i> Articles
+                        <span class="badge badge-roundless badge-success" ng-bind="meta.articles_count || 0"></span>
+                    </a>
+                </li>
+                <li ng-class="{ 'active': path == '/journalists' }">
+                    <a data-toggle="tab" href="#journalists">
+                        <i class="fa fa-clock-o"></i> Journalists
+                        <span class="badge badge-roundless badge-success" ng-bind="meta.journalists.length || 0"></span>
+                    </a>
+                </li>
+                <li ng-class="{ 'active': path == '/comments' }">
+                    <a data-toggle="tab" href="#comments">
+                        <i class="fa fa-clock-o"></i> Comments
+                        <span class="badge badge-roundless badge-success" ng-bind="count || 0"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-8 profile-info">
+                    <h3>Summary</h3>
+                    <p>
+                        <%= data.publisher.summary%>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <div class="portlet sale-summary">
+                        <div class="portlet-title">
+                            <div class="caption"> Stats </div>
+                        </div>
+                        <div class="portlet-body">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <span class="sale-info">Articles</span>
+                                    <span class="sale-num"><%= data.meta.articles_count %></span>
+                                </li>
+                                <li>
+                                    <span class="sale-info">Journalists</span>
+                                    <span class="sale-num"><%= data.meta.journalists.length %></span>
+                                </li>
+                                <li>
+                                    <span class="sale-info">Followers</span>
+                                    <span class="sale-num"><%= data.meta.follower_count %></span>
+                                </li>
+                                <li>
+                                    <span class="sale-info">AVG Rating</span>
+                                    <span class="sale-num"><%= data.meta.avg_rating_user %></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tabbable tabbable-custom tabbable-custom-profile">
+                        <ul class="nav nav-tabs">
+                            <li ng-class="{ 'active': path == '/facts'  || path == '/' || !path  }">
+                                <a href="#facts" data-toggle="tab">
+                                    Facts
+                                </a>
+                            </li>
+                            <li ng-class="{ 'active': path == '/articles' }">
+                                <a href="#articles" data-toggle="tab">
+                                    Articles
+                                    <span class="badge badge-roundless badge-success" ng-bind="meta.articles_count || 0"></span>
+                                </a>
+                            </li>
+                            <li ng-class="{ 'active': path == '/journalists' }">
+                                <a href="#journalists" data-toggle="tab">
+                                    Journalists
+                                    <span class="badge badge-roundless badge-success" ng-bind="meta.journalists.length || 0"></span>
+                                </a>
+                            </li>
+                            <li ng-class="{ 'active': path == '/comments' }">
+                                <a href="#comments" data-toggle="tab">
+                                    Comments
+                                    <span class="badge badge-roundless badge-success" ng-bind="count || 0"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+
+                            <div class="tab-pane" id="tab_facts" ng-class="{ 'active':  path == '/facts'  || path == '/' || !path }">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <section id="profile-about">
+                                                <h3>About</h3>
+                                                <div>
+                                                    <%= data.publisher.about %>
+                                                </div>
+                                            </section>
+
+                                            <section id="profile-owners">
+                                                <h3>Parent Company</h3>
+                                                <div>
+                                                    <% if (data.publisher.owner) { %>
+                                                    <div><%= data.publisher.owner %></div>
+                                                        <% if (data.publisher.owner_url) { %>
+                                                        <a href="<%= data.publisher.owner_url %>" target="_blank"><%= data.publisher.owner_url %></a>
+                                                        <% } %>
+                                                    <% } else { %>
+                                                    <div>Unknown</div>
+                                                    <% } %>
+                                                </div>
+                                            </section>
+
+                                            <section id="profile-revenue">
+                                                <h3>Company Revenue</h3>
+                                                <div>
+                                                    <img src="http://lorempixel.com/400/200/" class="img-responsive">
+                                                </div>
+                                            </section>
+
+                                            <section id="profile-contact">
+                                                <h3><i class="glyphicon glyphicon-eye-open"></i>&nbsp;Contact</h3>
+                                                <ul>
+                                                    <% if (data.publisher.email) { %>
+                                                    <li>
+                                                        <i class="glyphicon glyphicon-envelope"></i>&nbsp;<a href="mailto:editor@torontosun.com">editor@torontosun.com</a>
+                                                    </li>
+                                                    <% } %>
+                                                    <% if (data.publisher.url) { %>
+                                                    <li>
+                                                        <i class="glyphicon glyphicon-globe"></i>&nbsp;<a href="<%= data.publisher.url %>" target="_blank"><%= data.publisher.url %></a>
+                                                    </li>
+                                                    <% } %>
+                                                    <% if (data.publisher.twitter) { %>
+                                                    <li>
+                                                        <i class="glyphicon glyphicon-link"></i>&nbsp;<a href="http://www.twitter.com/torontosun" target="_blank">http://www.twitter.com/torontosun</a>
+                                                    </li>
+                                                    <% } %>
+                                                    <% if (data.publisher.facebook) { %>
+                                                    <li>
+                                                        <i class="glyphicon glyphicon-thumbs-up"></i>&nbsp;<a href="http://www.facebook.com/torontosun" target="_blank">http://www.facebook.com/torontosun</a>
+                                                    </li>
+                                                    <% } %>
+                                                </ul>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab_articles" ng-class="{ 'active': path == '/articles' }">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <table class="table table-condensed table-striped" style="margin-bottom: 0;">
+                                                <% data.meta.articles.forEach(function(article) { %>
+                                                <tr>
+                                                    <td><a href="/article/<%= article.slug %>/"><%= article.title %></a></td>
+                                                </tr>
+                                                <% }) %>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab_journalists" ng-class="{ 'active': path == '/journalists' }">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <table class="table table-condensed table-striped" style="margin-bottom: 0;">
+                                                <% data.meta.journalists.forEach(function(journalist) { %>
+                                                <tr>
+                                                    <td><a href="/journalist/<%= journalist.slug %>"><%=journalist.first_name %>&nbsp;<%=journalist.last_name %></a></td>
+                                                    <td><%=journalist.first_name %></td>
+                                                    <td><%=journalist.last_name %></td>
+                                                </tr>
+                                                <% }) %>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab_comments" ng-class="{ 'active': path == '/comments' }">
+
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                            <div id="accordion1" class="panel-group accordion">
+                                                <script type="text/ng-template" id="/public/js/views/comments.html">
+                                                    <% include ../../public/js/views/comments.html %>
+                                                </script>
+                                                <nl-comments target="publisher" count="count"  type="publisher"></nl-comments>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+</section>
+
+<% include ../common/footer %>
