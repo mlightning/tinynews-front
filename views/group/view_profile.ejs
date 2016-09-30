@@ -1,0 +1,219 @@
+<% include ../common/header %>
+<link href="/assets/admin/pages/css/profile.css" rel="stylesheet" type="text/css" />
+
+<section ng-controller='GroupProfileController'>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-title">
+                <%- data.group.name %>
+            </h3>
+            <ul class="page-breadcrumb breadcrumb">
+                <li>
+                    <i class="fa fa-home"></i>
+                    <a href="/">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/group">Groups</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a href="/group/<%- data.group.slug %>">
+                        <%- data.group.name %>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row profile">
+        <div class="col-md-3">
+            <ul class="list-unstyled profile-nav">
+                <li>
+                    <% if (data.group.imageUrl) { %>
+                    <img src="<%= data.group.imageUrl %>" ng-src="{{ group.imageUrl }}" alt="<%- data.group.name %>" height="252" width="252" class="img-rounded img-responsive">
+                    <% } else { %>
+                    <img src="/images/profile_default_group.png" ng-src="{{ group.imageUrl }}" alt="<%- data.group.name %>" height="252" width="252" class="img-rounded img-responsive">
+                    <% } %>
+
+                    <% if (token.user.permissions['group.edit']) { %>
+                    <a href="javascript: void(0);" class="profile-edit" nl-img-uploader category="group" current-img="{{group.imageUrl}}" callback="save_profile_image"> edit </a>
+                    <% } %>
+                </li>
+            </ul>
+                    <% if (token.user['@rid']) { %>
+                    <nl-group-membership group="group"></nl-group-membership>
+                    <nl-follow target="group" type="groups"></nl-follow>
+                    <% } %>
+            <ul class="ver-inline-menu tabbable margin-bottom-10">
+                <li ng-class="{ 'active': path == '/reviews' || path == '/' || !path }">
+                    <a data-toggle="tab" href="#reviews">
+                        <i class="fa fa-star-half-o"></i>
+                        Recently Reviewed
+                        <span class="badge badge-roundless badge-success"> <%= data.group.recently_reviewed.length %></span>
+                    </a>
+                </li>
+                <li ng-class="{ 'active': path == '/members' }">
+                    <a data-toggle="tab" href="#members">
+                        <i class="fa fa-users"></i>
+                        Members
+                        <span class="badge badge-roundless badge-success"><%= data.group.members.length %></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+
+            <div class="row">
+                <div class="col-md-8 profile-info">
+                    <h3>Summary</h3>
+                    <% if(data.group.summary) { %>
+                        <p>
+                            <%= data.group.summary %>
+                        </p>
+                    <% } else { %>
+                        <p>
+                            No Summary Added
+                        </p>
+                    <% } %>
+                        <section id="profile-contact">
+                            <h3><i class="typcn typcn-eye-open"></i>Contact</h3>
+                    <% if (data.group.email || data.group.website || data.group.twitter || data.group.facebook) { %>
+                            <div>
+                                <ul>
+                                    <% if (data.group.email) { %>
+                                    <li>
+                                        <i class="typcn typcn-mail"></i>&nbsp;<a href="mailto:<%- data.group.email %>"><%- data.group.email %></a>
+                                    </li>
+                                    <% } %>
+                                    <% if (data.group.website) { %>
+                                    <li>
+                                        <i class="typcn typcn-world-outline"></i>&nbsp;<a href="<%- data.group.website %>" target="_blank"><%- data.group.website %></a>
+                                    </li>
+                                    <% } %>
+                                    <% if (data.group.twitter) { %>
+                                    <li>
+                                        <i class="typcn typcn-social-twitter"></i>&nbsp;<a href="http://www.twitter.com/<%- data.group.twitter %>" target="_blank">http://www.twitter.com/<%- data.group.twitter %></a>
+                                    </li>
+                                    <% } %>
+                                    <% if (data.group.facebook) { %>
+                                    <li>
+                                        <i class="typcn typcn-social-facebook"></i>&nbsp;<a href="http://www.facebook.com/<%- data.group.facebook %>" target="_blank">http://www.facebook.com/<%- data.group.facebook %></a>
+                                    </li>
+                                    <% } %>
+                                </ul>
+                            </div>
+                        <% } else { %>
+                            <p>
+                                No Contact Information Added
+                            </p>
+                        <% } %>
+                        </section>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="portlet sale-summary">
+                        <div class="portlet-title">
+                            <div class="caption"> Stats </div>
+                        </div>
+                        <div class="portlet-body">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <span class="sale-info">Articles Reviewed</span>
+                                    <span class="sale-num"><%= data.group.recently_reviewed.length %></span>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-lg-5 col-md-5 col-sm-5">
+                                            <span class="sale-info">Members</span>
+                                        </div>
+                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                              <span class="sale-num">
+                                                <span><%= data.group.members.length %></span>
+                                              </span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="sale-info">Subscribers</span>
+                                    <span class="sale-num"><%=  data.group.follow_count %></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="tabbable tabbable-custom tabbable-custom-profile">
+                        <ul class="nav nav-tabs">
+                            <li ng-class="{ 'active': path == '/reviews' || path == '/' || !path}">
+                                <a href="#reviews" data-toggle="tab">
+                                    Recently Reviewed
+                                    <span class="badge badge-roundless badge-success"> <%= data.group.recently_reviewed.length %></span>
+                                </a>
+                            </li>
+                            <li ng-class="{ 'active': path == '/members' }">
+                                <a href="#members" data-toggle="tab">
+                                    Members
+                                    <span class="badge badge-roundless badge-success"><%= data.group.members.length %></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+
+
+                            <div class="tab-pane" id="tab_reviews" ng-class="{ 'active': path == '/reviews' || path == '/' || !path }">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <table class="table table-condensed table-striped" style="margin-bottom: 0;">
+                                                <% data.group.recently_reviewed.forEach(function(review) { %>
+                                                <tr>
+                                                    <td><a href="/review/<%= review.slug %>/"><%= review.title %></a></td>
+                                                </tr>
+                                                <% }) %>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="tab_members" ng-class="{ 'active': path == '/members'}">
+                                <div class="portlet-body">
+                                    <div class="row featured">
+                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                            <table class="table table-condensed table-striped" style="margin-bottom: 0;">
+                                                <% data.group.members.forEach(function(member) { %>
+                                                <tr>
+                                                    <td>
+                                                        <div class="caption">
+                                                            <a href="/profile/<%= member.handle %>/">
+                                                                <img alt="<%= member.first_name %> <%= member.last_name %>" src="http://placehold.it/100x50">
+                                                            </a>
+                                                            <p>
+                                                                <a href="/profile/<%= member.handle %>/">
+                                                                    <%= member.first_name %> <%= member.last_name %>
+                                                                </a>
+                                                            </p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+</div>
+</section>
+
+<% include ../common/footer %>
